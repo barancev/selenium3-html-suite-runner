@@ -8,4 +8,6 @@ public interface RunContext {
   void setDriver(WebDriver driver);
   WebDriver getDriver();
   WebDriverBackedSelenium getWDBS();
+
+  String getPageLoadTimeout();
 }

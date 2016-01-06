@@ -53,6 +53,11 @@ public class HtmlSuiteRunner implements RunContext {
     return wdbs;
   }
 
+  @Override
+  public String getPageLoadTimeout() {
+    return "30000";
+  }
+
   public static void main(String[] args) throws IOException, SAXException {
     HtmlSuiteRunner runner = new HtmlSuiteRunner();
     new JCommander(runner, args);
@@ -166,6 +171,13 @@ public class HtmlSuiteRunner implements RunContext {
       command = m.group(2);
     }
 
+    Pattern p2 = Pattern.compile("(.*)(AndWait)");
+    Matcher m2 = p2.matcher(command);
+    if (m2.matches()) {
+      resultProcessor = m2.group(2);
+      command = m2.group(1);
+    }
+
     Step.Factory factory = stepFactories.get(command.toLowerCase());
     if (factory == null) {
       return new UnsupportedCommandStep(args);
@@ -174,7 +186,7 @@ public class HtmlSuiteRunner implements RunContext {
     Step step = factory.create(args);
 
     if (resultProcessor != null) {
-      step = resultProcessorFactories.get(resultProcessor).wrap(step, args);
+      step = resultProcessorFactories.get(resultProcessor.toLowerCase()).wrap(step, args);
     }
 
     return step;
@@ -183,16 +195,21 @@ public class HtmlSuiteRunner implements RunContext {
   private Map<String, Step.Factory> stepFactories = new ImmutableMap.Builder<String, Step.Factory>()
           .put("open", new OpenStep.Factory())
           .put("click", new ClickStep.Factory())
+          .put("csscount", new CssCountStep.Factory())
           .put("attribute", new AttributeStep.Factory())
+          .put("elementpresent", new ElementPresentStep.Factory())
+          .put("elementnotpresent", new ElementNotPresentStep.Factory())
           .put("eval", new EvalStep.Factory())
           .put("text", new TextStep.Factory())
+          .put("xpathcount", new XpathCountStep.Factory())
           .build();
 
   private Map<String, ResultProcessor.Factory> resultProcessorFactories = new ImmutableMap.Builder<String, ResultProcessor.Factory>()
           .put("assert", new AssertResult.Factory())
           .put("verify", new VerifyResult.Factory())
           .put("store", new StoreResult.Factory())
-          .put("waitFor", new WaitForResult.Factory())
+          .put("waitfor", new WaitForResult.Factory())
+          .put("andwait", new AndWaitResult.Factory())
           .build();
 
   private WebDriver createDriver(String browser) {

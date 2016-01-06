@@ -26,6 +26,8 @@ public class VerifyResult implements ResultProcessor {
     step.run(ctx);
     if (step instanceof HasStringResult) {
       return expectedResult.equals(((HasStringResult) step).getResult());
+    } else if (step instanceof HasNumberResult) {
+      return expectedResult.equals(((HasNumberResult) step).getResult().toString());
     } else if (step instanceof HasBooleanResult) {
       return ((HasBooleanResult) step).getResult();
     } else {
