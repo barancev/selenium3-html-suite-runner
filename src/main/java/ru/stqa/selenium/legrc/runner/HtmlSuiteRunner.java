@@ -7,14 +7,17 @@ import org.cyberneko.html.parsers.DOMParser;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
+import ru.stqa.selenium.legrc.runner.steps.AssertResult;
 import ru.stqa.selenium.legrc.runner.steps.OpenStep;
+import ru.stqa.selenium.legrc.runner.steps.UnsupportedCommandStep;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class HtmlSuiteRunner {
 
@@ -45,9 +48,11 @@ public class HtmlSuiteRunner {
     if (id == null) {
       HtmlScenario scenario = new HtmlScenario(toRun);
       initScenario(scenario, table);
+      System.out.println(scenario);
     } else {
       HtmlSuite suite = new HtmlSuite(toRun);
       initSuite(suite, table);
+      System.out.println(suite);
     }
   }
 
@@ -91,9 +96,11 @@ public class HtmlSuiteRunner {
           // TODO: Suite name?
           firstRow = false;
         } else {
-          File scenarioPath = suite.getFullPathToScenario(findChildElement(row, "A").getAttributes().getNamedItem("href").getNodeValue());
+          File scenarioPath = suite.getFullPathToScenario(findChildElement(row, "A")
+                  .getAttributes().getNamedItem("href").getNodeValue());
           HtmlScenario scenario = new HtmlScenario(scenarioPath);
           initScenario(scenario, getTableFromHtmlFile(scenarioPath));
+          suite.addScenario(scenario);
         }
       }
       row = row.getNextSibling();
@@ -102,7 +109,7 @@ public class HtmlSuiteRunner {
 
   private void initScenario(HtmlScenario scenario, Node table) {
     Node thead = findChildElement(table, "THEAD");
-    System.out.println(thead.getTextContent());
+    scenario.setName(thead.getTextContent().trim());
 
     Node tbody = findChildElement(table, "TBODY");
     Node row = tbody.getFirstChild();
@@ -112,7 +119,7 @@ public class HtmlSuiteRunner {
         Node cell = row.getFirstChild();
         while (cell != null) {
           if (cell.getNodeType() == Node.ELEMENT_NODE) {
-            args.add(cell.getTextContent());
+            args.add(cell.getTextContent().trim());
           }
           cell = cell.getNextSibling();
         }
@@ -123,10 +130,34 @@ public class HtmlSuiteRunner {
   }
 
   private Step createStep(List<String> args) {
-    return stepFactories.get(args.get(0)).create(args);
+    String command = args.get(0);
+    String resultProcessor = null;
+    Pattern p = Pattern.compile("(store|assert|verify|waitFor)(.*)");
+    Matcher m = p.matcher(command);
+    if (m.matches()) {
+      resultProcessor = m.group(1);
+      command = m.group(2);
+    }
+
+    Step.Factory factory = stepFactories.get(command);
+    if (factory == null) {
+      return new UnsupportedCommandStep(args);
+    }
+
+    Step step = factory.create(args);
+
+    if (resultProcessor != null) {
+      step = resultProcessorFactories.get(resultProcessor).wrap(step);
+    }
+
+    return step;
   }
 
   private Map<String, Step.Factory> stepFactories = new ImmutableMap.Builder<String, Step.Factory>()
           .put("open", new OpenStep.Factory())
+          .build();
+
+  private Map<String, ResultProcessor.Factory> resultProcessorFactories = new ImmutableMap.Builder<String, ResultProcessor.Factory>()
+          .put("assert", new AssertResult.Factory())
           .build();
 }

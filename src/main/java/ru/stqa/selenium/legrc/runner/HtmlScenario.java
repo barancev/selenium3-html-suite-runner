@@ -22,8 +22,18 @@ public class HtmlScenario {
     this.name = name;
   }
 
-
   public void addStep(Step step) {
     steps.add(step);
+  }
+
+  public String toString() {
+    StringBuilder builder = new StringBuilder();
+    builder.append(name);
+    builder.append("\n");
+    for (Step step : steps) {
+      builder.append(step);
+      builder.append("\n");
+    }
+    return builder.toString();
   }
 }
