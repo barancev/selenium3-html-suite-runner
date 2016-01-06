@@ -40,7 +40,7 @@ public class HtmlSuiteRunner implements RunContext {
 
   private WebDriver driver;
   private WebDriverBackedSelenium wdbs;
-  private Map<String, Object> vars = new HashMap<String, Object>();
+  private Map<String, String> vars = new HashMap<String, String>();
 
   @Override
   public void setDriver(WebDriver driver) {
@@ -70,7 +70,20 @@ public class HtmlSuiteRunner implements RunContext {
 
   @Override
   public String substitute(String text) {
-    return text;
+    StringBuffer sb = new StringBuffer();
+    Pattern p = Pattern.compile("(\\$\\{\\w+\\})");
+    Matcher m = p.matcher(text);
+    while (m.find()) {
+      String maybeVar = m.group(1);
+      String varName = maybeVar.substring(2, maybeVar.length() - 1);
+      if (vars.containsKey(varName)) {
+        m.appendReplacement(sb, Matcher.quoteReplacement(vars.get(varName)));
+      } else {
+        m.appendReplacement(sb, Matcher.quoteReplacement(maybeVar));
+      }
+    }
+    m.appendTail(sb);
+    return sb.toString();
   }
 
   public static void main(String[] args) throws IOException, SAXException {
@@ -217,6 +230,7 @@ public class HtmlSuiteRunner implements RunContext {
           .put("eval", new EvalStep.Factory())
           .put("text", new TextStep.Factory())
           .put("type", new TypeStep.Factory())
+          .put("value", new ValueStep.Factory())
           .put("xpathcount", new XpathCountStep.Factory())
           .build();
 
@@ -233,7 +247,7 @@ public class HtmlSuiteRunner implements RunContext {
       return new FirefoxDriver();
     } else if (browser.equals(BrowserType.CHROME)) {
       return new ChromeDriver();
-    } else if (driver.equals(BrowserType.IE)) {
+    } else if (browser.equals(BrowserType.IE)) {
       return new InternetExplorerDriver();
     } else {
       return null;

@@ -29,7 +29,7 @@ public class EvalStep implements Step, HasStringResult {
 
   @Override
   public boolean run(RunContext ctx) {
-    result = ctx.getWDBS().getEval(script);
+    result = ctx.getWDBS().getEval(ctx.substitute(script));
     return true;
   }
 

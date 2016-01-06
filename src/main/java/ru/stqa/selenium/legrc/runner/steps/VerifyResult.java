@@ -23,6 +23,7 @@ public class VerifyResult implements ResultProcessor {
 
   @Override
   public boolean run(RunContext ctx) {
+    String expectedResult = ctx.substitute(this.expectedResult);
     step.run(ctx);
     if (step instanceof HasStringResult) {
       return expectedResult.equals(((HasStringResult) step).getResult());

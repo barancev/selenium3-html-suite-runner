@@ -23,6 +23,7 @@ public class WaitForResult implements ResultProcessor {
 
   @Override
   public boolean run(RunContext ctx) {
+    String expectedResult = ctx.substitute(this.expectedResult);
     long start = System.currentTimeMillis();
     do {
       step.run(ctx);

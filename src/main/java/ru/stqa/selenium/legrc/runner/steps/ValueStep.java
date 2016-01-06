@@ -6,12 +6,12 @@ import ru.stqa.selenium.legrc.runner.Step;
 
 import java.util.List;
 
-public class TextStep implements Step, HasStringResult {
+public class ValueStep implements Step, HasStringResult {
 
   private String locator;
   private String result;
 
-  public TextStep(String locator) {
+  public ValueStep(String locator) {
     this.locator = locator;
   }
 
@@ -23,13 +23,13 @@ public class TextStep implements Step, HasStringResult {
   public static class Factory implements Step.Factory {
     @Override
     public Step create(List<String> args) {
-      return new TextStep(args.get(1));
+      return new ValueStep(args.get(1));
     }
   }
 
   @Override
   public boolean run(RunContext ctx) {
-    result = ctx.getWDBS().getText(locator).replace('\n', ' ');
+    result = ctx.getWDBS().getValue(locator);
     return true;
   }
 

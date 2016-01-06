@@ -24,7 +24,7 @@ public class TypeStep implements Step {
 
   @Override
   public boolean run(RunContext ctx) {
-    ctx.getWDBS().type(locator, text);
+    ctx.getWDBS().type(locator, ctx.substitute(text));
     return true;
   }
 }
