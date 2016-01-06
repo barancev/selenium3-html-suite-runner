@@ -4,6 +4,11 @@ import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.google.common.collect.ImmutableMap;
 import org.cyberneko.html.parsers.DOMParser;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.remote.BrowserType;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
@@ -21,10 +26,10 @@ import java.util.regex.Pattern;
 
 public class HtmlSuiteRunner implements RunContext {
 
-  @Parameter(names = {"--suite", "--scenario", "-s"}, description = "Suite or scenario file to run")
+  @Parameter(names = {"--suite", "--scenario", "-s"}, description = "Suite or scenario file to run", required = true)
   private String suiteOrScenario;
 
-  @Parameter(names = {"--browser", "-b"}, description = "Browser type")
+  @Parameter(names = {"--browser", "-b"}, description = "Browser type", required = true)
   private String browser;
 
   @Parameter(names = {"--baseurl", "-u"}, description = "Base URL")
@@ -32,6 +37,16 @@ public class HtmlSuiteRunner implements RunContext {
 
   @Parameter(names = {"--report", "-r"}, description = "Report file")
   private String report;
+
+  private WebDriver driver;
+
+  public void setDriver(WebDriver driver) {
+    this.driver = driver;
+  }
+
+  public WebDriver getDriver() {
+    return driver;
+  }
 
   public static void main(String[] args) throws IOException, SAXException {
     HtmlSuiteRunner runner = new HtmlSuiteRunner();
@@ -44,17 +59,23 @@ public class HtmlSuiteRunner implements RunContext {
 
     Node table = getTableFromHtmlFile(toRun);
     Node id = table.getAttributes().getNamedItem("id");
+    
+    HtmlRunnable runnable;
 
     if (id == null) {
       HtmlScenario scenario = new HtmlScenario(toRun);
       initScenario(scenario, table);
-      scenario.run(this);
+      runnable = scenario;
 
     } else {
       HtmlSuite suite = new HtmlSuite(toRun);
       initSuite(suite, table);
-      suite.run(this);
+      runnable = suite;
     }
+    
+    setDriver(createDriver(browser));
+    runnable.run(this);
+    getDriver().quit();
   }
 
   private Node getTableFromHtmlFile(File htmlFile) throws IOException, SAXException {
@@ -161,4 +182,17 @@ public class HtmlSuiteRunner implements RunContext {
   private Map<String, ResultProcessor.Factory> resultProcessorFactories = new ImmutableMap.Builder<String, ResultProcessor.Factory>()
           .put("assert", new AssertResult.Factory())
           .build();
+
+  private WebDriver createDriver(String browser) {
+    if (browser.equals(BrowserType.FIREFOX)) {
+      return new FirefoxDriver();
+    } else if (browser.equals(BrowserType.CHROME)) {
+      return new ChromeDriver();
+    } else if (driver.equals(BrowserType.IE)) {
+      return new InternetExplorerDriver();
+    } else {
+      return null;
+    }
+  }
+
 }
