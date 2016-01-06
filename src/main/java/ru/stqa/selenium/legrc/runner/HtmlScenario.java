@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HtmlScenario {
+public class HtmlScenario implements HtmlRunnable {
 
   private String name;
   private final File path;
@@ -35,5 +35,13 @@ public class HtmlScenario {
       builder.append("\n");
     }
     return builder.toString();
+  }
+
+  public boolean run(RunContext ctx) {
+    boolean result = true;
+    for (Step step : steps) {
+      result = step.run(ctx) && result;
+    }
+    return result;
   }
 }

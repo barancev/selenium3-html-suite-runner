@@ -6,4 +6,6 @@ public interface Step {
   interface Factory {
     Step create(List<String> args);
   }
+
+  boolean run(RunContext ctx);
 }

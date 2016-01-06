@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class HtmlSuiteRunner {
+public class HtmlSuiteRunner implements RunContext {
 
   @Parameter(names = {"--suite", "--scenario", "-s"}, description = "Suite or scenario file to run")
   private String suiteOrScenario;
@@ -48,11 +48,12 @@ public class HtmlSuiteRunner {
     if (id == null) {
       HtmlScenario scenario = new HtmlScenario(toRun);
       initScenario(scenario, table);
-      System.out.println(scenario);
+      scenario.run(this);
+
     } else {
       HtmlSuite suite = new HtmlSuite(toRun);
       initSuite(suite, table);
-      System.out.println(suite);
+      suite.run(this);
     }
   }
 

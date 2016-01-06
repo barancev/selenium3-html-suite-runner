@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HtmlSuite {
+public class HtmlSuite implements HtmlRunnable {
 
   private final File path;
   private List<HtmlScenario> scenarios = new ArrayList<HtmlScenario>();
@@ -28,5 +28,13 @@ public class HtmlSuite {
       builder.append("\n");
     }
     return builder.toString();
+  }
+
+  public boolean run(RunContext ctx) {
+    boolean result = true;
+    for (HtmlScenario scenario : scenarios) {
+      result = scenario.run(ctx) && result;
+    }
+    return result;
   }
 }
