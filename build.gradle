@@ -7,6 +7,7 @@ repositories {
 dependencies {
     compile 'com.beust:jcommander:1.48'
     compile 'net.sourceforge.nekohtml:nekohtml:1.9.22'
+    compile 'com.google.guava:guava:19.0'
 }
 
 version = '1.0'
