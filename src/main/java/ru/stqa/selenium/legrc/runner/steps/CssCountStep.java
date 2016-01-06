@@ -29,7 +29,7 @@ public class CssCountStep implements Step, HasNumberResult {
 
   @Override
   public boolean run(RunContext ctx) {
-    result = ctx.getWDBS().getCssCount(locator);
+    result = ctx.getWDBS().getCssCount(ctx.substitute(locator));
     return true;
   }
 

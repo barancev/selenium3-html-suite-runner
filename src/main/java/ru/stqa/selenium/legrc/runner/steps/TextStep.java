@@ -29,7 +29,7 @@ public class TextStep implements Step, HasStringResult {
 
   @Override
   public boolean run(RunContext ctx) {
-    result = ctx.getWDBS().getText(locator).replace('\n', ' ');
+    result = ctx.getWDBS().getText(ctx.substitute(locator)).replace('\n', ' ');
     return true;
   }
 

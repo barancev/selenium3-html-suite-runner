@@ -29,7 +29,7 @@ public class ValueStep implements Step, HasStringResult {
 
   @Override
   public boolean run(RunContext ctx) {
-    result = ctx.getWDBS().getValue(locator);
+    result = ctx.getWDBS().getValue(ctx.substitute(locator));
     return true;
   }
 

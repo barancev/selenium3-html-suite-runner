@@ -29,7 +29,7 @@ public class ElementNotPresentStep implements Step, HasBooleanResult {
 
   @Override
   public boolean run(RunContext ctx) {
-    result = ! ctx.getWDBS().isElementPresent(locator);
+    result = ! ctx.getWDBS().isElementPresent(ctx.substitute(locator));
     return true;
   }
 

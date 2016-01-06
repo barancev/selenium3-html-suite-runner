@@ -30,7 +30,7 @@ public class XpathCountStep implements Step, HasNumberResult {
 
   @Override
   public boolean run(RunContext ctx) {
-    result = ctx.getWDBS().getXpathCount(locator);
+    result = ctx.getWDBS().getXpathCount(ctx.substitute(locator));
     return true;
   }
 

@@ -22,7 +22,7 @@ public class ClickStep implements Step {
 
   @Override
   public boolean run(RunContext ctx) {
-    ctx.getWDBS().click(locator);
+    ctx.getWDBS().click(ctx.substitute(locator));
     return true;
   }
 }

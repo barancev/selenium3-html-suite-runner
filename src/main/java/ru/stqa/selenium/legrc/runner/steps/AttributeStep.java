@@ -29,7 +29,7 @@ public class AttributeStep implements Step, HasStringResult {
 
   @Override
   public boolean run(RunContext ctx) {
-    result = ctx.getWDBS().getAttribute(attributeLocator);
+    result = ctx.getWDBS().getAttribute(ctx.substitute(attributeLocator));
     return true;
   }
 

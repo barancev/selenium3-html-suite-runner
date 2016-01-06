@@ -22,7 +22,7 @@ public class OpenStep implements Step {
 
   @Override
   public boolean run(RunContext ctx) {
-    ctx.getWDBS().open(url);
+    ctx.getWDBS().open(ctx.substitute(url));
     return true;
   }
 
