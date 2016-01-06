@@ -9,5 +9,8 @@ public interface RunContext {
   WebDriver getDriver();
   WebDriverBackedSelenium getWDBS();
 
-  String getPageLoadTimeout();
+  long getTimeout();
+
+  void storeVar(String name, String value);
+  String substitute(String text);
 }

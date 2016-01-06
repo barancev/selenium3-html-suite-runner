@@ -30,7 +30,7 @@ public class EvalStep implements Step, HasStringResult {
   @Override
   public boolean run(RunContext ctx) {
     result = ctx.getWDBS().getEval(script);
-    return false;
+    return true;
   }
 
 }

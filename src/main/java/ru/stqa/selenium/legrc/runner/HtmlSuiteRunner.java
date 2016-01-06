@@ -18,6 +18,7 @@ import ru.stqa.selenium.legrc.runner.steps.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -39,23 +40,37 @@ public class HtmlSuiteRunner implements RunContext {
 
   private WebDriver driver;
   private WebDriverBackedSelenium wdbs;
+  private Map<String, Object> vars = new HashMap<String, Object>();
 
+  @Override
   public void setDriver(WebDriver driver) {
     this.driver = driver;
     this.wdbs = new WebDriverBackedSelenium(driver, baseUrl);
   }
 
+  @Override
   public WebDriver getDriver() {
     return driver;
   }
 
+  @Override
   public WebDriverBackedSelenium getWDBS() {
     return wdbs;
   }
 
   @Override
-  public String getPageLoadTimeout() {
-    return "30000";
+  public long getTimeout() {
+    return 30000;
+  }
+
+  @Override
+  public void storeVar(String name, String value) {
+    vars.put(name, value);
+  }
+
+  @Override
+  public String substitute(String text) {
+    return text;
   }
 
   public static void main(String[] args) throws IOException, SAXException {
@@ -201,6 +216,7 @@ public class HtmlSuiteRunner implements RunContext {
           .put("elementnotpresent", new ElementNotPresentStep.Factory())
           .put("eval", new EvalStep.Factory())
           .put("text", new TextStep.Factory())
+          .put("type", new TypeStep.Factory())
           .put("xpathcount", new XpathCountStep.Factory())
           .build();
 

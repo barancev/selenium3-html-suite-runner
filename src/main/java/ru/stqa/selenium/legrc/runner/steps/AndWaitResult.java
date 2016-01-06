@@ -24,7 +24,7 @@ public class AndWaitResult implements ResultProcessor {
   @Override
   public boolean run(RunContext ctx) {
     step.run(ctx);
-    ctx.getWDBS().waitForPageToLoad(ctx.getPageLoadTimeout());
+    ctx.getWDBS().waitForPageToLoad("" + ctx.getTimeout());
     return true;
   }
 
