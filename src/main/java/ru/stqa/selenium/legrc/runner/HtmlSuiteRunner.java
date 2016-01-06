@@ -3,7 +3,6 @@ package ru.stqa.selenium.legrc.runner;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.google.common.collect.ImmutableMap;
-import com.thoughtworks.selenium.webdriven.WebDriverBackedSelenium;
 import org.cyberneko.html.parsers.DOMParser;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -221,15 +220,24 @@ public class HtmlSuiteRunner implements RunContext {
   }
 
   private Map<String, Step.Factory> stepFactories = new ImmutableMap.Builder<String, Step.Factory>()
+          .put("altkeydown", new AltKeyDownStep.Factory())
+          .put("altkeyup", new AltKeyUpStep.Factory())
           .put("attribute", new AttributeStep.Factory())
           .put("click", new ClickStep.Factory())
           .put("clickat", new ClickAtStep.Factory())
+          .put("controlkeydown", new ControlKeyDownStep.Factory())
+          .put("controlkeyup", new ControlKeyUpStep.Factory())
           .put("csscount", new CssCountStep.Factory())
           .put("doubleclick", new DoubleClickStep.Factory())
           .put("doubleclickat", new DoubleClickAtStep.Factory())
           .put("elementpresent", new ElementPresentStep.Factory())
           .put("elementnotpresent", new ElementNotPresentStep.Factory())
           .put("eval", new EvalStep.Factory())
+          .put("keydown", new KeyDownStep.Factory())
+          .put("keypress", new KeyPressStep.Factory())
+          .put("keyup", new KeyUpStep.Factory())
+          .put("metakeydown", new MetaKeyDownStep.Factory())
+          .put("metakeyup", new MetaKeyUpStep.Factory())
           .put("mousedown", new MouseDownStep.Factory())
           .put("mousedownright", new MouseDownRightStep.Factory())
           .put("mousedownat", new MouseDownAtStep.Factory())
@@ -246,6 +254,10 @@ public class HtmlSuiteRunner implements RunContext {
           .put("pause", new PauseStep.Factory())
           .put("text", new TextStep.Factory())
           .put("type", new TypeStep.Factory())
+          .put("typekeys", new TypeKeysStep.Factory())
+          .put("sendkeys", new SendKeysStep.Factory())
+          .put("shiftkeydown", new ShiftKeyDownStep.Factory())
+          .put("shiftkeyup", new ShiftKeyUpStep.Factory())
           .put("value", new ValueStep.Factory())
           .put("xpathcount", new XpathCountStep.Factory())
           .build();
