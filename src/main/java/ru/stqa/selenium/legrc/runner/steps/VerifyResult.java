@@ -4,12 +4,12 @@ import ru.stqa.selenium.legrc.runner.*;
 
 import java.util.List;
 
-public class AssertResult implements ResultProcessor {
+public class VerifyResult implements ResultProcessor {
 
   private Step step;
   private String expectedResult;
 
-  public AssertResult(Step step, String expectedResult) {
+  public VerifyResult(Step step, String expectedResult) {
     this.step = step;
     this.expectedResult = expectedResult;
   }
@@ -17,7 +17,7 @@ public class AssertResult implements ResultProcessor {
   public static class Factory implements ResultProcessor.Factory {
     @Override
     public ResultProcessor wrap(Step step, List<String> args) {
-      return new AssertResult(step, args.get(2));
+      return new VerifyResult(step, args.get(2));
     }
   }
 

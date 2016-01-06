@@ -13,9 +13,7 @@ import org.openqa.selenium.remote.BrowserType;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
-import ru.stqa.selenium.legrc.runner.steps.AssertResult;
-import ru.stqa.selenium.legrc.runner.steps.OpenStep;
-import ru.stqa.selenium.legrc.runner.steps.UnsupportedCommandStep;
+import ru.stqa.selenium.legrc.runner.steps.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -82,7 +80,7 @@ public class HtmlSuiteRunner implements RunContext {
     
     setDriver(createDriver(browser));
     runnable.run(this);
-    getDriver().quit();
+    //getDriver().quit();
   }
 
   private Node getTableFromHtmlFile(File htmlFile) throws IOException, SAXException {
@@ -168,7 +166,7 @@ public class HtmlSuiteRunner implements RunContext {
       command = m.group(2);
     }
 
-    Step.Factory factory = stepFactories.get(command);
+    Step.Factory factory = stepFactories.get(command.toLowerCase());
     if (factory == null) {
       return new UnsupportedCommandStep(args);
     }
@@ -176,7 +174,7 @@ public class HtmlSuiteRunner implements RunContext {
     Step step = factory.create(args);
 
     if (resultProcessor != null) {
-      step = resultProcessorFactories.get(resultProcessor).wrap(step);
+      step = resultProcessorFactories.get(resultProcessor).wrap(step, args);
     }
 
     return step;
@@ -184,10 +182,17 @@ public class HtmlSuiteRunner implements RunContext {
 
   private Map<String, Step.Factory> stepFactories = new ImmutableMap.Builder<String, Step.Factory>()
           .put("open", new OpenStep.Factory())
+          .put("click", new ClickStep.Factory())
+          .put("attribute", new AttributeStep.Factory())
+          .put("eval", new EvalStep.Factory())
+          .put("text", new TextStep.Factory())
           .build();
 
   private Map<String, ResultProcessor.Factory> resultProcessorFactories = new ImmutableMap.Builder<String, ResultProcessor.Factory>()
           .put("assert", new AssertResult.Factory())
+          .put("verify", new VerifyResult.Factory())
+          .put("store", new StoreResult.Factory())
+          .put("waitFor", new WaitForResult.Factory())
           .build();
 
   private WebDriver createDriver(String browser) {

@@ -40,7 +40,9 @@ public class HtmlScenario implements HtmlRunnable {
   public boolean run(RunContext ctx) {
     boolean result = true;
     for (Step step : steps) {
-      result = step.run(ctx) && result;
+      boolean stepResult = step.run(ctx);
+      result = stepResult && result;
+      System.out.print(stepResult ? "." : "F");
     }
     return result;
   }
