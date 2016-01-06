@@ -7,16 +7,23 @@ import java.util.List;
 
 public class OpenStep implements Step {
 
+  private String url;
+
+  public OpenStep(String url) {
+    this.url = url;
+  }
+
   public static class Factory implements Step.Factory {
     @Override
     public Step create(List<String> args) {
-      return new OpenStep();
+      return new OpenStep(args.get(1));
     }
   }
 
   @Override
   public boolean run(RunContext ctx) {
-    return false;
+    ctx.getWDBS().open(url);
+    return true;
   }
 
 }

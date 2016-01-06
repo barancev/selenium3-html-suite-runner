@@ -3,6 +3,7 @@ package ru.stqa.selenium.legrc.runner;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.google.common.collect.ImmutableMap;
+import com.thoughtworks.selenium.webdriven.WebDriverBackedSelenium;
 import org.cyberneko.html.parsers.DOMParser;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -32,20 +33,26 @@ public class HtmlSuiteRunner implements RunContext {
   @Parameter(names = {"--browser", "-b"}, description = "Browser type", required = true)
   private String browser;
 
-  @Parameter(names = {"--baseurl", "-u"}, description = "Base URL")
+  @Parameter(names = {"--baseurl", "-u"}, description = "Base URL", required = true)
   private String baseUrl;
 
   @Parameter(names = {"--report", "-r"}, description = "Report file")
   private String report;
 
   private WebDriver driver;
+  private WebDriverBackedSelenium wdbs;
 
   public void setDriver(WebDriver driver) {
     this.driver = driver;
+    this.wdbs = new WebDriverBackedSelenium(driver, baseUrl);
   }
 
   public WebDriver getDriver() {
     return driver;
+  }
+
+  public WebDriverBackedSelenium getWDBS() {
+    return wdbs;
   }
 
   public static void main(String[] args) throws IOException, SAXException {
