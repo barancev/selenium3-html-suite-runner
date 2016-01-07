@@ -60,7 +60,7 @@ public class HtmlSuiteRunner implements RunContext {
 
   @Override
   public long getTimeout() {
-    return 30000;
+    return 5000;
   }
 
   @Override
@@ -114,7 +114,7 @@ public class HtmlSuiteRunner implements RunContext {
     setDriver(createDriver(browser));
     runnable.run(this);
     generateReport(runnable);
-    //getDriver().quit();
+    getDriver().quit();
   }
 
   private Node getTableFromHtmlFile(File htmlFile) throws IOException, SAXException {

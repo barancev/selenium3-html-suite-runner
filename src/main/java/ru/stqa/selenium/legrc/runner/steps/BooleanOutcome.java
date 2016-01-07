@@ -14,6 +14,8 @@ public class BooleanOutcome implements StepOutcome {
   public boolean matches(Object expected) {
     if (expected instanceof Boolean) {
       return outcome == (Boolean) expected;
+    } else if (expected instanceof String && "".equals(expected)) {
+      return outcome;
     } else {
       return false;
     }

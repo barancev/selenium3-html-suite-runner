@@ -8,6 +8,7 @@ import ru.stqa.selenium.legrc.runner.StepOutcome;
 public class AbstractStepWrapper implements StepWrapper {
 
   protected Step step;
+  protected boolean stepResult = true;
 
   public AbstractStepWrapper(Step step) {
     this.step = step;
@@ -15,7 +16,7 @@ public class AbstractStepWrapper implements StepWrapper {
 
   @Override
   public boolean run(RunContext ctx) {
-    boolean stepResult = step.run(ctx);
+    stepResult = step.run(ctx);
     stepResult = afterStep(ctx) && stepResult;
     return stepResult;
   }
@@ -26,7 +27,7 @@ public class AbstractStepWrapper implements StepWrapper {
 
   @Override
   public StepOutcome getOutcome() {
-    return step.getOutcome();
+    return new BooleanOutcome(stepResult);
   }
 
   @Override
