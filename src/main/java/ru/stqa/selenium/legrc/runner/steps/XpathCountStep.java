@@ -1,24 +1,17 @@
 package ru.stqa.selenium.legrc.runner.steps;
 
-import ru.stqa.selenium.legrc.runner.HasNumberResult;
-import ru.stqa.selenium.legrc.runner.HasStringResult;
 import ru.stqa.selenium.legrc.runner.RunContext;
 import ru.stqa.selenium.legrc.runner.Step;
+import ru.stqa.selenium.legrc.runner.StepOutcome;
 
 import java.util.List;
 
-public class XpathCountStep implements Step, HasNumberResult {
+public class XpathCountStep extends AbstractStep {
 
   private String locator;
-  private Number result;
 
   public XpathCountStep(String locator) {
     this.locator = locator;
-  }
-
-  @Override
-  public Number getResult() {
-    return result;
   }
 
   public static class Factory implements Step.Factory {
@@ -29,9 +22,8 @@ public class XpathCountStep implements Step, HasNumberResult {
   }
 
   @Override
-  public boolean run(RunContext ctx) {
-    result = ctx.getWDBS().getXpathCount(ctx.substitute(locator));
-    return true;
+  public StepOutcome runInternal(RunContext ctx) {
+    return new NumberOutcome(ctx.getWDBS().getXpathCount(ctx.substitute(locator)));
   }
 
 }

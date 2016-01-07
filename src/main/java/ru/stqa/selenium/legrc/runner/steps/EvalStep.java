@@ -1,23 +1,17 @@
 package ru.stqa.selenium.legrc.runner.steps;
 
-import ru.stqa.selenium.legrc.runner.HasStringResult;
 import ru.stqa.selenium.legrc.runner.RunContext;
 import ru.stqa.selenium.legrc.runner.Step;
+import ru.stqa.selenium.legrc.runner.StepOutcome;
 
 import java.util.List;
 
-public class EvalStep implements Step, HasStringResult {
+public class EvalStep extends AbstractStep {
 
   private String script;
-  private String result;
 
   public EvalStep(String script) {
     this.script = script;
-  }
-
-  @Override
-  public String getResult() {
-    return result;
   }
 
   public static class Factory implements Step.Factory {
@@ -28,9 +22,8 @@ public class EvalStep implements Step, HasStringResult {
   }
 
   @Override
-  public boolean run(RunContext ctx) {
-    result = ctx.getWDBS().getEval(ctx.substitute(ctx.substitute(script)));
-    return true;
+  public StepOutcome runInternal(RunContext ctx) {
+    return new StringOutcome(ctx.getWDBS().getEval(ctx.substitute(ctx.substitute(script))));
   }
 
 }

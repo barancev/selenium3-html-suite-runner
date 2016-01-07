@@ -2,10 +2,11 @@ package ru.stqa.selenium.legrc.runner.steps;
 
 import ru.stqa.selenium.legrc.runner.RunContext;
 import ru.stqa.selenium.legrc.runner.Step;
+import ru.stqa.selenium.legrc.runner.StepOutcome;
 
 import java.util.List;
 
-public class AltKeyUpStep implements Step {
+public class AltKeyUpStep extends AbstractStep {
 
   public static class Factory implements Step.Factory {
     @Override
@@ -15,8 +16,8 @@ public class AltKeyUpStep implements Step {
   }
 
   @Override
-  public boolean run(RunContext ctx) {
+  public StepOutcome runInternal(RunContext ctx) {
     ctx.getWDBS().altKeyUp();
-    return true;
+    return new VoidOutcome();
   }
 }

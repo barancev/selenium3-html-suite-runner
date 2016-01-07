@@ -2,10 +2,11 @@ package ru.stqa.selenium.legrc.runner.steps;
 
 import ru.stqa.selenium.legrc.runner.RunContext;
 import ru.stqa.selenium.legrc.runner.Step;
+import ru.stqa.selenium.legrc.runner.StepOutcome;
 
 import java.util.List;
 
-public class TypeKeysStep implements Step {
+public class TypeKeysStep extends AbstractStep {
 
   private String locator;
   private String text;
@@ -23,8 +24,8 @@ public class TypeKeysStep implements Step {
   }
 
   @Override
-  public boolean run(RunContext ctx) {
+  public StepOutcome runInternal(RunContext ctx) {
     ctx.getWDBS().typeKeys(locator, ctx.substitute(text));
-    return true;
+    return new VoidOutcome();
   }
 }

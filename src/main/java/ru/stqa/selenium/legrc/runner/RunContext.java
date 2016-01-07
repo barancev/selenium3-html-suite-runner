@@ -10,6 +10,6 @@ public interface RunContext {
 
   long getTimeout();
 
-  void storeVar(String name, String value);
+  void storeVar(String name, StepOutcome value);
   String substitute(String text);
 }

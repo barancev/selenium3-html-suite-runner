@@ -4,13 +4,12 @@ import ru.stqa.selenium.legrc.runner.*;
 
 import java.util.List;
 
-public class VerifyResult implements ResultProcessor {
+public class VerifyResult extends AbstractStepWrapper {
 
-  private Step step;
   private String expectedResult;
 
   public VerifyResult(Step step, String expectedResult) {
-    this.step = step;
+    super(step);
     this.expectedResult = expectedResult;
   }
 
@@ -22,18 +21,8 @@ public class VerifyResult implements ResultProcessor {
   }
 
   @Override
-  public boolean run(RunContext ctx) {
-    String expectedResult = ctx.substitute(this.expectedResult);
-    step.run(ctx);
-    if (step instanceof HasStringResult) {
-      return expectedResult.equals(((HasStringResult) step).getResult());
-    } else if (step instanceof HasNumberResult) {
-      return expectedResult.equals(((HasNumberResult) step).getResult().toString());
-    } else if (step instanceof HasBooleanResult) {
-      return ((HasBooleanResult) step).getResult();
-    } else {
-      return false;
-    }
+  public boolean afterStep(RunContext ctx) {
+    return step.getOutcome().matches(ctx.substitute(expectedResult));
   }
 
 }

@@ -8,4 +8,5 @@ public interface Step {
   }
 
   boolean run(RunContext ctx);
+  StepOutcome getOutcome();
 }

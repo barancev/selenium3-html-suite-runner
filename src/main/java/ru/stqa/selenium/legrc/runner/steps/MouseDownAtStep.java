@@ -2,10 +2,11 @@ package ru.stqa.selenium.legrc.runner.steps;
 
 import ru.stqa.selenium.legrc.runner.RunContext;
 import ru.stqa.selenium.legrc.runner.Step;
+import ru.stqa.selenium.legrc.runner.StepOutcome;
 
 import java.util.List;
 
-public class MouseDownAtStep implements Step {
+public class MouseDownAtStep extends AbstractStep {
 
   private String locator;
   private String coords;
@@ -23,8 +24,8 @@ public class MouseDownAtStep implements Step {
   }
 
   @Override
-  public boolean run(RunContext ctx) {
+  public StepOutcome runInternal(RunContext ctx) {
     ctx.getWDBS().mouseDownAt(ctx.substitute(locator), ctx.substitute(coords));
-    return true;
+    return new VoidOutcome();
   }
 }

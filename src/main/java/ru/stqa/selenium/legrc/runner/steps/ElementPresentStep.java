@@ -1,23 +1,17 @@
 package ru.stqa.selenium.legrc.runner.steps;
 
-import ru.stqa.selenium.legrc.runner.HasBooleanResult;
 import ru.stqa.selenium.legrc.runner.RunContext;
 import ru.stqa.selenium.legrc.runner.Step;
+import ru.stqa.selenium.legrc.runner.StepOutcome;
 
 import java.util.List;
 
-public class ElementPresentStep implements Step, HasBooleanResult {
+public class ElementPresentStep  extends AbstractStep {
 
   private String locator;
-  private boolean result;
 
   public ElementPresentStep(String locator) {
     this.locator = locator;
-  }
-
-  @Override
-  public boolean getResult() {
-    return result;
   }
 
   public static class Factory implements Step.Factory {
@@ -28,9 +22,8 @@ public class ElementPresentStep implements Step, HasBooleanResult {
   }
 
   @Override
-  public boolean run(RunContext ctx) {
-    result = ctx.getWDBS().isElementPresent(ctx.substitute(locator));
-    return true;
+  public StepOutcome runInternal(RunContext ctx) {
+    return new BooleanOutcome(ctx.getWDBS().isElementPresent(ctx.substitute(locator)));
   }
 
 }

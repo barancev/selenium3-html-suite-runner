@@ -1,23 +1,17 @@
 package ru.stqa.selenium.legrc.runner.steps;
 
-import ru.stqa.selenium.legrc.runner.HasStringResult;
 import ru.stqa.selenium.legrc.runner.RunContext;
 import ru.stqa.selenium.legrc.runner.Step;
+import ru.stqa.selenium.legrc.runner.StepOutcome;
 
 import java.util.List;
 
-public class AttributeStep implements Step, HasStringResult {
+public class AttributeStep extends AbstractStep {
 
   private String attributeLocator;
-  private String result;
 
   public AttributeStep(String attributeLocator) {
     this.attributeLocator = attributeLocator;
-  }
-
-  @Override
-  public String getResult() {
-    return result;
   }
 
   public static class Factory implements Step.Factory {
@@ -28,9 +22,8 @@ public class AttributeStep implements Step, HasStringResult {
   }
 
   @Override
-  public boolean run(RunContext ctx) {
-    result = ctx.getWDBS().getAttribute(ctx.substitute(attributeLocator));
-    return true;
+  public StepOutcome runInternal(RunContext ctx) {
+    return new StringOutcome(ctx.getWDBS().getAttribute(ctx.substitute(attributeLocator)));
   }
 
 }

@@ -2,10 +2,11 @@ package ru.stqa.selenium.legrc.runner.steps;
 
 import ru.stqa.selenium.legrc.runner.RunContext;
 import ru.stqa.selenium.legrc.runner.Step;
+import ru.stqa.selenium.legrc.runner.StepOutcome;
 
 import java.util.List;
 
-public class MouseUpStep implements Step {
+public class MouseUpStep extends AbstractStep {
 
   private String locator;
 
@@ -21,8 +22,8 @@ public class MouseUpStep implements Step {
   }
 
   @Override
-  public boolean run(RunContext ctx) {
+  public StepOutcome runInternal(RunContext ctx) {
     ctx.getWDBS().mouseUp(ctx.substitute(locator));
-    return true;
+    return new VoidOutcome();
   }
 }

@@ -39,7 +39,7 @@ public class HtmlSuiteRunner implements RunContext {
 
   private WebDriver driver;
   private WebDriverBackedSelenium wdbs;
-  private Map<String, String> vars = new HashMap<String, String>();
+  private Map<String, StepOutcome> vars = new HashMap<String, StepOutcome>();
 
   @Override
   public void setDriver(WebDriver driver) {
@@ -63,7 +63,7 @@ public class HtmlSuiteRunner implements RunContext {
   }
 
   @Override
-  public void storeVar(String name, String value) {
+  public void storeVar(String name, StepOutcome value) {
     vars.put(name, value);
   }
 
@@ -76,7 +76,7 @@ public class HtmlSuiteRunner implements RunContext {
       String maybeVar = m.group(1);
       String varName = maybeVar.substring(2, maybeVar.length() - 1);
       if (vars.containsKey(varName)) {
-        m.appendReplacement(sb, Matcher.quoteReplacement(vars.get(varName)));
+        m.appendReplacement(sb, Matcher.quoteReplacement(vars.get(varName).toString()));
       } else {
         m.appendReplacement(sb, Matcher.quoteReplacement(maybeVar));
       }

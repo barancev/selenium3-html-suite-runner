@@ -1,23 +1,17 @@
 package ru.stqa.selenium.legrc.runner.steps;
 
-import ru.stqa.selenium.legrc.runner.HasStringResult;
 import ru.stqa.selenium.legrc.runner.RunContext;
 import ru.stqa.selenium.legrc.runner.Step;
+import ru.stqa.selenium.legrc.runner.StepOutcome;
 
 import java.util.List;
 
-public class TextStep implements Step, HasStringResult {
+public class TextStep extends AbstractStep {
 
   private String locator;
-  private String result;
 
   public TextStep(String locator) {
     this.locator = locator;
-  }
-
-  @Override
-  public String getResult() {
-    return result;
   }
 
   public static class Factory implements Step.Factory {
@@ -28,9 +22,8 @@ public class TextStep implements Step, HasStringResult {
   }
 
   @Override
-  public boolean run(RunContext ctx) {
-    result = ctx.getWDBS().getText(ctx.substitute(locator)).replace('\n', ' ');
-    return true;
+  public StepOutcome runInternal(RunContext ctx) {
+    return new StringOutcome(ctx.getWDBS().getText(ctx.substitute(locator)).replace('\n', ' '));
   }
 
 }

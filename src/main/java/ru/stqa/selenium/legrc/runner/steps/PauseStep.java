@@ -2,10 +2,11 @@ package ru.stqa.selenium.legrc.runner.steps;
 
 import ru.stqa.selenium.legrc.runner.RunContext;
 import ru.stqa.selenium.legrc.runner.Step;
+import ru.stqa.selenium.legrc.runner.StepOutcome;
 
 import java.util.List;
 
-public class PauseStep implements Step {
+public class PauseStep extends AbstractStep {
 
   private long duration;
 
@@ -21,12 +22,12 @@ public class PauseStep implements Step {
   }
 
   @Override
-  public boolean run(RunContext ctx) {
+  public StepOutcome runInternal(RunContext ctx) {
     try {
       Thread.sleep(duration);
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
-    return true;
+    return new VoidOutcome();
   }
 }

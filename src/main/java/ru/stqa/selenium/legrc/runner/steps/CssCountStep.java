@@ -1,23 +1,17 @@
 package ru.stqa.selenium.legrc.runner.steps;
 
-import ru.stqa.selenium.legrc.runner.HasNumberResult;
 import ru.stqa.selenium.legrc.runner.RunContext;
 import ru.stqa.selenium.legrc.runner.Step;
+import ru.stqa.selenium.legrc.runner.StepOutcome;
 
 import java.util.List;
 
-public class CssCountStep implements Step, HasNumberResult {
+public class CssCountStep extends AbstractStep {
 
   private String locator;
-  private Number result;
 
   public CssCountStep(String locator) {
     this.locator = locator;
-  }
-
-  @Override
-  public Number getResult() {
-    return result;
   }
 
   public static class Factory implements Step.Factory {
@@ -28,9 +22,8 @@ public class CssCountStep implements Step, HasNumberResult {
   }
 
   @Override
-  public boolean run(RunContext ctx) {
-    result = ctx.getWDBS().getCssCount(ctx.substitute(locator));
-    return true;
+  public StepOutcome runInternal(RunContext ctx) {
+    return new NumberOutcome(ctx.getWDBS().getCssCount(ctx.substitute(locator)));
   }
 
 }

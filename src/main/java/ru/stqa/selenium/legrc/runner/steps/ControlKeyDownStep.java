@@ -2,10 +2,11 @@ package ru.stqa.selenium.legrc.runner.steps;
 
 import ru.stqa.selenium.legrc.runner.RunContext;
 import ru.stqa.selenium.legrc.runner.Step;
+import ru.stqa.selenium.legrc.runner.StepOutcome;
 
 import java.util.List;
 
-public class ControlKeyDownStep implements Step {
+public class ControlKeyDownStep extends AbstractStep {
 
   public static class Factory implements Step.Factory {
     @Override
@@ -15,8 +16,8 @@ public class ControlKeyDownStep implements Step {
   }
 
   @Override
-  public boolean run(RunContext ctx) {
+  public StepOutcome runInternal(RunContext ctx) {
     ctx.getWDBS().controlKeyDown();
-    return true;
+    return new VoidOutcome();
   }
 }

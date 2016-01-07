@@ -4,13 +4,13 @@ import ru.stqa.selenium.legrc.runner.*;
 
 import java.util.List;
 
-public class StoreResult implements ResultProcessor {
+public class StoreResult extends AbstractStepWrapper {
 
   private Step step;
   private String varName;
 
   public StoreResult(Step step, String varName) {
-    this.step = step;
+    super(step);
     this.varName = varName;
   }
 
@@ -22,17 +22,8 @@ public class StoreResult implements ResultProcessor {
   }
 
   @Override
-  public boolean run(RunContext ctx) {
-    step.run(ctx);
-    if (step instanceof HasStringResult) {
-      ctx.storeVar(varName, ((HasStringResult) step).getResult());
-    } else if (step instanceof HasNumberResult) {
-      ctx.storeVar(varName, ((HasNumberResult) step).getResult().toString());
-    } else if (step instanceof HasBooleanResult) {
-      ctx.storeVar(varName, "" + ((HasBooleanResult) step).getResult());
-    } else {
-      return false;
-    }
+  public boolean afterStep(RunContext ctx) {
+    ctx.storeVar(varName, step.getOutcome());
     return true;
   }
 

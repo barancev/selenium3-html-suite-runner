@@ -4,13 +4,12 @@ import ru.stqa.selenium.legrc.runner.*;
 
 import java.util.List;
 
-public class WaitForResult implements ResultProcessor {
+public class WaitForResult extends AbstractStepWrapper {
 
-  private Step step;
   private String expectedResult;
 
   public WaitForResult(Step step, String expectedResult) {
-    this.step = step;
+    super(step);
     this.expectedResult = expectedResult;
   }
 
@@ -27,18 +26,8 @@ public class WaitForResult implements ResultProcessor {
     long start = System.currentTimeMillis();
     do {
       step.run(ctx);
-      if (step instanceof HasStringResult) {
-        if (expectedResult.equals(((HasStringResult) step).getResult())) {
-          return true;
-        }
-      } else if (step instanceof HasNumberResult) {
-        if (expectedResult.equals(((HasNumberResult) step).getResult().toString())) {
-          return true;
-        }
-      } else if (step instanceof HasBooleanResult) {
-        if (((HasBooleanResult) step).getResult()) {
-          return true;
-        }
+      if (step.getOutcome().matches(expectedResult)) {
+        return true;
       }
     } while (System.currentTimeMillis() < start + ctx.getTimeout());
 

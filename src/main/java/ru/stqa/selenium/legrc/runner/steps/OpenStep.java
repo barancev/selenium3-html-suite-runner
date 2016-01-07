@@ -2,10 +2,11 @@ package ru.stqa.selenium.legrc.runner.steps;
 
 import ru.stqa.selenium.legrc.runner.RunContext;
 import ru.stqa.selenium.legrc.runner.Step;
+import ru.stqa.selenium.legrc.runner.StepOutcome;
 
 import java.util.List;
 
-public class OpenStep implements Step {
+public class OpenStep extends AbstractStep {
 
   private String url;
 
@@ -21,9 +22,9 @@ public class OpenStep implements Step {
   }
 
   @Override
-  public boolean run(RunContext ctx) {
+  public StepOutcome runInternal(RunContext ctx) {
     ctx.getWDBS().open(ctx.substitute(url));
-    return true;
+    return new VoidOutcome();
   }
 
 }
