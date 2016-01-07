@@ -10,14 +10,15 @@ public class ElementNotPresentStep extends AbstractStep {
 
   private String locator;
 
-  public ElementNotPresentStep(String locator) {
-    this.locator = locator;
+  public ElementNotPresentStep(List<String> args) {
+    super(args);
+    this.locator = args.get(1);
   }
 
   public static class Factory implements Step.Factory {
     @Override
     public Step create(List<String> args) {
-      return new ElementNotPresentStep(args.get(1));
+      return new ElementNotPresentStep(args);
     }
   }
 

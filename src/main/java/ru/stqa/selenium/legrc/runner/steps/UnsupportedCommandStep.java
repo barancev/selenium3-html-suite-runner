@@ -28,4 +28,17 @@ public class UnsupportedCommandStep implements Step {
   public StepOutcome getOutcome() {
     return new VoidOutcome();
   }
+
+  @Override
+  public String toHtml() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("<tr class='step'>");
+    sb.append(String.format("<td class='command unsupported-command'>%s</td>", args.get(0)));
+    sb.append(String.format("<td class='arg1'>%s</td>", args.get(1)));
+    sb.append(String.format("<td class='arg2'>%s</td>", args.get(2)));
+    sb.append(String.format("<td class='outcome'>Operation is not supported</td>"));
+    sb.append("<td class='time'>Time</td>");
+    sb.append("</tr>");
+    return sb.toString();
+  }
 }

@@ -8,10 +8,14 @@ import java.util.List;
 
 public class MetaKeyUpStep extends AbstractStep {
 
+  public MetaKeyUpStep(List<String> args) {
+    super(args);
+  }
+
   public static class Factory implements Step.Factory {
     @Override
     public Step create(List<String> args) {
-      return new MetaKeyUpStep();
+      return new MetaKeyUpStep(args);
     }
   }
 

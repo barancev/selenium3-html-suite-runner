@@ -8,10 +8,14 @@ import java.util.List;
 
 public class ControlKeyUpStep extends AbstractStep {
 
+  public ControlKeyUpStep(List<String> args) {
+    super(args);
+  }
+
   public static class Factory implements Step.Factory {
     @Override
     public Step create(List<String> args) {
-      return new ControlKeyUpStep();
+      return new ControlKeyUpStep(args);
     }
   }
 

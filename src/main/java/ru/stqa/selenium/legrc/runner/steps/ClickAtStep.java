@@ -11,15 +11,16 @@ public class ClickAtStep extends AbstractStep {
   private String locator;
   private String coords;
 
-  public ClickAtStep(String locator, String coords) {
-    this.locator = locator;
-    this.coords = coords;
+  public ClickAtStep(List<String> args) {
+    super(args);
+    this.locator = args.get(1);
+    this.coords = args.get(2);
   }
 
   public static class Factory implements Step.Factory {
     @Override
     public Step create(List<String> args) {
-      return new ClickAtStep(args.get(1), args.get(2));
+      return new ClickAtStep(args);
     }
   }
 

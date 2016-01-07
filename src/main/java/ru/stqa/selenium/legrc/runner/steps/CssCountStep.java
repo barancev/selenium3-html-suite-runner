@@ -10,14 +10,15 @@ public class CssCountStep extends AbstractStep {
 
   private String locator;
 
-  public CssCountStep(String locator) {
-    this.locator = locator;
+  public CssCountStep(List<String> args) {
+    super(args);
+    this.locator = args.get(1);
   }
 
   public static class Factory implements Step.Factory {
     @Override
     public Step create(List<String> args) {
-      return new CssCountStep(args.get(1));
+      return new CssCountStep(args);
     }
   }
 

@@ -11,15 +11,16 @@ public class KeyDownStep extends AbstractStep {
   private String locator;
   private String text;
 
-  public KeyDownStep(String locator, String text) {
-    this.locator = locator;
-    this.text = text;
+  public KeyDownStep(List<String> args) {
+    super(args);
+    this.locator = args.get(1);
+    this.text = args.get(2);
   }
 
   public static class Factory implements Step.Factory {
     @Override
     public Step create(List<String> args) {
-      return new KeyDownStep(args.get(1), args.get(2));
+      return new KeyDownStep(args);
     }
   }
 

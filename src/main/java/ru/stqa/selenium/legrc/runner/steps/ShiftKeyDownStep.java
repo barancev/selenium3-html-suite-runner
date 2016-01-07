@@ -8,10 +8,14 @@ import java.util.List;
 
 public class ShiftKeyDownStep extends AbstractStep {
 
+  public ShiftKeyDownStep(List<String> args) {
+    super(args);
+  }
+
   public static class Factory implements Step.Factory {
     @Override
     public Step create(List<String> args) {
-      return new ShiftKeyDownStep();
+      return new ShiftKeyDownStep(args);
     }
   }
 

@@ -37,4 +37,16 @@ public class HtmlSuite implements HtmlRunnable {
     }
     return result;
   }
+
+  @Override
+  public String toHtml() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("<div class='suite'>");
+    sb.append("<p>Metadata</p>");
+    for (HtmlScenario scenario : scenarios) {
+      sb.append(scenario.toHtml());
+    }
+    sb.append("</div>");
+    return sb.toString();
+  }
 }

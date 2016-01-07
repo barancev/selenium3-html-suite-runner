@@ -10,14 +10,15 @@ public class MouseOutStep extends AbstractStep {
 
   private String locator;
 
-  public MouseOutStep(String locator) {
-    this.locator = locator;
+  public MouseOutStep(List<String> args) {
+    super(args);
+    this.locator = args.get(1);
   }
 
   public static class Factory implements Step.Factory {
     @Override
     public Step create(List<String> args) {
-      return new MouseOutStep(args.get(1));
+      return new MouseOutStep(args);
     }
   }
 

@@ -11,15 +11,16 @@ public class MouseUpRightAtStep extends AbstractStep {
   private String locator;
   private String coords;
 
-  public MouseUpRightAtStep(String locator, String coords) {
-    this.locator = locator;
-    this.coords = coords;
+  public MouseUpRightAtStep(List<String> args) {
+    super(args);
+    this.locator = args.get(1);
+    this.coords = args.get(2);
   }
 
   public static class Factory implements Step.Factory {
     @Override
     public Step create(List<String> args) {
-      return new MouseUpRightAtStep(args.get(1), args.get(2));
+      return new MouseUpRightAtStep(args);
     }
   }
 

@@ -10,14 +10,15 @@ public class TextStep extends AbstractStep {
 
   private String locator;
 
-  public TextStep(String locator) {
-    this.locator = locator;
+  public TextStep(List<String> args) {
+    super(args);
+    this.locator = args.get(1);
   }
 
   public static class Factory implements Step.Factory {
     @Override
     public Step create(List<String> args) {
-      return new TextStep(args.get(1));
+      return new TextStep(args);
     }
   }
 

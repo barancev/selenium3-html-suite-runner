@@ -10,14 +10,15 @@ public class AttributeStep extends AbstractStep {
 
   private String attributeLocator;
 
-  public AttributeStep(String attributeLocator) {
-    this.attributeLocator = attributeLocator;
+  public AttributeStep(List<String> args) {
+    super(args);
+    this.attributeLocator = args.get(1);
   }
 
   public static class Factory implements Step.Factory {
     @Override
     public Step create(List<String> args) {
-      return new AttributeStep(args.get(1));
+      return new AttributeStep(args);
     }
   }
 

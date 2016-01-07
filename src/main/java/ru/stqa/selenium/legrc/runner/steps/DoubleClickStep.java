@@ -10,14 +10,15 @@ public class DoubleClickStep extends AbstractStep {
 
   private String locator;
 
-  public DoubleClickStep(String locator) {
-    this.locator = locator;
+  public DoubleClickStep(List<String> args) {
+    super(args);
+    this.locator = args.get(1);
   }
 
   public static class Factory implements Step.Factory {
     @Override
     public Step create(List<String> args) {
-      return new DoubleClickStep(args.get(1));
+      return new DoubleClickStep(args);
     }
   }
 

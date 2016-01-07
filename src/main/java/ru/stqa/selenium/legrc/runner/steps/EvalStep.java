@@ -10,14 +10,15 @@ public class EvalStep extends AbstractStep {
 
   private String script;
 
-  public EvalStep(String script) {
-    this.script = script;
+  public EvalStep(List<String> args) {
+    super(args);
+    this.script = args.get(1);
   }
 
   public static class Factory implements Step.Factory {
     @Override
     public Step create(List<String> args) {
-      return new EvalStep(args.get(1));
+      return new EvalStep(args);
     }
   }
 

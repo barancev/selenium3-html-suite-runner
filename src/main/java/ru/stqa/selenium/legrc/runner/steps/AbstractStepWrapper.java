@@ -28,4 +28,9 @@ public class AbstractStepWrapper implements StepWrapper {
   public StepOutcome getOutcome() {
     return step.getOutcome();
   }
+
+  @Override
+  public String toHtml() {
+    return step.toHtml();
+  }
 }

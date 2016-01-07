@@ -10,14 +10,15 @@ public class XpathCountStep extends AbstractStep {
 
   private String locator;
 
-  public XpathCountStep(String locator) {
-    this.locator = locator;
+  public XpathCountStep(List<String> args) {
+    super(args);
+    this.locator = args.get(1);
   }
 
   public static class Factory implements Step.Factory {
     @Override
     public Step create(List<String> args) {
-      return new XpathCountStep(args.get(1));
+      return new XpathCountStep(args);
     }
   }
 

@@ -10,14 +10,15 @@ public class PauseStep extends AbstractStep {
 
   private long duration;
 
-  public PauseStep(long duration) {
-    this.duration = duration;
+  public PauseStep(List<String> args) {
+    super(args);
+    this.duration = Long.parseLong(args.get(1));
   }
 
   public static class Factory implements Step.Factory {
     @Override
     public Step create(List<String> args) {
-      return new PauseStep(Long.parseLong(args.get(1)));
+      return new PauseStep(args);
     }
   }
 

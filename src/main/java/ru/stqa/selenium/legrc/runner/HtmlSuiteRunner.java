@@ -15,6 +15,7 @@ import org.xml.sax.SAXException;
 import ru.stqa.selenium.legrc.runner.steps.*;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,7 +35,7 @@ public class HtmlSuiteRunner implements RunContext {
   @Parameter(names = {"--baseurl", "-u"}, description = "Base URL", required = true)
   private String baseUrl;
 
-  @Parameter(names = {"--report", "-r"}, description = "Report file")
+  @Parameter(names = {"--report", "-r"}, description = "Report file", required = true)
   private String report;
 
   private WebDriver driver;
@@ -112,6 +113,7 @@ public class HtmlSuiteRunner implements RunContext {
     
     setDriver(createDriver(browser));
     runnable.run(this);
+    generateReport(runnable);
     //getDriver().quit();
   }
 
@@ -279,6 +281,15 @@ public class HtmlSuiteRunner implements RunContext {
       return new InternetExplorerDriver();
     } else {
       return null;
+    }
+  }
+
+  private void generateReport(HtmlRunnable runnable) throws IOException {
+    FileWriter reportWriter = new FileWriter(new File(report));
+    try {
+      reportWriter.write(runnable.toHtml());
+    } finally {
+      reportWriter.close();
     }
   }
 

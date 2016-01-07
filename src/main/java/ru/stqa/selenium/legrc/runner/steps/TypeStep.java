@@ -11,15 +11,16 @@ public class TypeStep extends AbstractStep {
   private String locator;
   private String text;
 
-  public TypeStep(String locator, String text) {
-    this.locator = locator;
-    this.text = text;
+  public TypeStep(List<String> args) {
+    super(args);
+    this.locator = args.get(1);
+    this.text = args.get(2);
   }
 
   public static class Factory implements Step.Factory {
     @Override
     public Step create(List<String> args) {
-      return new TypeStep(args.get(1), args.get(2));
+      return new TypeStep(args);
     }
   }
 

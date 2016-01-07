@@ -46,4 +46,18 @@ public class HtmlScenario implements HtmlRunnable {
     }
     return result;
   }
+
+  @Override
+  public String toHtml() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("<div class='scenario'>");
+    sb.append("<p>Metadata</p>");
+    sb.append("<table class='scenario'><tbody>");
+    for (Step step : steps) {
+      sb.append(step.toHtml());
+    }
+    sb.append("</tbody></table>");
+    sb.append("</div>");
+    return sb.toString();
+  }
 }

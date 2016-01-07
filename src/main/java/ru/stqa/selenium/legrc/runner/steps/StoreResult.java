@@ -6,7 +6,6 @@ import java.util.List;
 
 public class StoreResult extends AbstractStepWrapper {
 
-  private Step step;
   private String varName;
 
   public StoreResult(Step step, String varName) {

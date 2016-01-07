@@ -10,14 +10,15 @@ public class MouseOverStep extends AbstractStep {
 
   private String locator;
 
-  public MouseOverStep(String locator) {
-    this.locator = locator;
+  public MouseOverStep(List<String> args) {
+    super(args);
+    this.locator = args.get(1);
   }
 
   public static class Factory implements Step.Factory {
     @Override
     public Step create(List<String> args) {
-      return new MouseOverStep(args.get(1));
+      return new MouseOverStep(args);
     }
   }
 

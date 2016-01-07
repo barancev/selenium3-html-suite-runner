@@ -10,14 +10,15 @@ public class OpenStep extends AbstractStep {
 
   private String url;
 
-  public OpenStep(String url) {
-    this.url = url;
+  public OpenStep(List<String> args) {
+    super(args);
+    this.url = args.get(1);
   }
 
   public static class Factory implements Step.Factory {
     @Override
     public Step create(List<String> args) {
-      return new OpenStep(args.get(1));
+      return new OpenStep(args);
     }
   }
 
