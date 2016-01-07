@@ -32,6 +32,11 @@ public class AbstractStepWrapper implements StepWrapper {
 
   @Override
   public String toHtml() {
-    return step.toHtml();
+    return step.toHtml(stepResult ? "status_passed" : "status_failed");
+  }
+
+  @Override
+  public String toHtml(String status) {
+    return step.toHtml(status);
   }
 }

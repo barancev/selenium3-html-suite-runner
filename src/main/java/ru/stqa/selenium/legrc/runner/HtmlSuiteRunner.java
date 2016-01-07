@@ -285,9 +285,32 @@ public class HtmlSuiteRunner implements RunContext {
   }
 
   private void generateReport(HtmlRunnable runnable) throws IOException {
+    StringBuilder sb = new StringBuilder();
+    sb.append("<html>\n<head>\n<style type='text/css'>\n");
+    sb.append("table {\n" +
+            "    border-collapse: collapse;\n" +
+            "    border: 1px solid #ccc;\n" +
+            "}\n");
+    sb.append("th, td {\n" +
+            "    padding-left: 0.3em;\n" +
+            "    padding-right: 0.3em;\n" +
+            "}\n");
+    sb.append(".status_done {\n" +
+            "    background-color: #eeffee;\n" +
+            "}\n");
+    sb.append(".status_passed {\n" +
+            "    background-color: #ccffcc;\n" +
+            "}\n");
+    sb.append(".status_failed {\n" +
+            "    background-color: #ffcccc;\n" +
+            "}\n");
+    sb.append("</style>\n</head>\n");
+    sb.append("<body>\n");
+    sb.append(runnable.toHtml());
+    sb.append("</body>\n</html>");
     FileWriter reportWriter = new FileWriter(new File(report));
     try {
-      reportWriter.write(runnable.toHtml());
+      reportWriter.write(sb.toString());
     } finally {
       reportWriter.close();
     }

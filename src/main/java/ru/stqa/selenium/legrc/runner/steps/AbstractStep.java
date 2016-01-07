@@ -10,6 +10,7 @@ public abstract class AbstractStep implements Step {
 
   private List<String> args;
   private StepOutcome outcome;
+  protected boolean result = true;
 
   public AbstractStep(List<String> args) {
     this.args = args;
@@ -22,16 +23,25 @@ public abstract class AbstractStep implements Step {
 
   @Override
   public boolean run(RunContext ctx) {
-    outcome = runInternal(ctx);
-    return true;
+    try {
+      outcome = runInternal(ctx);
+    } catch (Throwable ex) {
+      result = false;
+    }
+    return result;
   }
 
   protected abstract StepOutcome runInternal(RunContext ctx);
 
   @Override
   public String toHtml() {
+    return toHtml(result ? "status_done" : "status_failed");
+  }
+
+  @Override
+  public String toHtml(String status) {
     StringBuilder sb = new StringBuilder();
-    sb.append("<tr class='step'>");
+    sb.append(String.format("<tr class='step %s'>", status));
     sb.append(String.format("<td class='command'>%s</td>", args.get(0)));
     sb.append(String.format("<td class='arg1'>%s</td>", args.get(1)));
     sb.append(String.format("<td class='arg2'>%s</td>", args.get(2)));
