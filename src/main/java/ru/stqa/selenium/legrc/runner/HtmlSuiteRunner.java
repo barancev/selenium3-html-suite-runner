@@ -262,7 +262,7 @@ public class HtmlSuiteRunner implements RunContext {
           .put("xpathcount", new XpathCountStep.Factory())
           .build();
 
-  private Map<String, ResultProcessor.Factory> resultProcessorFactories = new ImmutableMap.Builder<String, ResultProcessor.Factory>()
+  private Map<String, StepWrapper.Factory> resultProcessorFactories = new ImmutableMap.Builder<String, StepWrapper.Factory>()
           .put("assert", new AssertResult.Factory())
           .put("verify", new VerifyResult.Factory())
           .put("store", new StoreResult.Factory())

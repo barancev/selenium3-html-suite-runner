@@ -13,9 +13,9 @@ public class VerifyResult extends AbstractStepWrapper {
     this.expectedResult = expectedResult;
   }
 
-  public static class Factory implements ResultProcessor.Factory {
+  public static class Factory implements StepWrapper.Factory {
     @Override
-    public ResultProcessor wrap(Step step, List<String> args) {
+    public StepWrapper wrap(Step step, List<String> args) {
       return new VerifyResult(step, args.get(2));
     }
   }

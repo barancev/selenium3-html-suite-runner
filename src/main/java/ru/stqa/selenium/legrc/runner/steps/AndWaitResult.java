@@ -1,9 +1,8 @@
 package ru.stqa.selenium.legrc.runner.steps;
 
-import ru.stqa.selenium.legrc.runner.ResultProcessor;
+import ru.stqa.selenium.legrc.runner.StepWrapper;
 import ru.stqa.selenium.legrc.runner.RunContext;
 import ru.stqa.selenium.legrc.runner.Step;
-import ru.stqa.selenium.legrc.runner.StepOutcome;
 
 import java.util.List;
 
@@ -13,9 +12,9 @@ public class AndWaitResult extends AbstractStepWrapper {
     super(step);
   }
 
-  public static class Factory implements ResultProcessor.Factory {
+  public static class Factory implements StepWrapper.Factory {
     @Override
-    public ResultProcessor wrap(Step step, List<String> args) {
+    public StepWrapper wrap(Step step, List<String> args) {
       return new AndWaitResult(step);
     }
   }

@@ -1,11 +1,11 @@
 package ru.stqa.selenium.legrc.runner.steps;
 
-import ru.stqa.selenium.legrc.runner.ResultProcessor;
+import ru.stqa.selenium.legrc.runner.StepWrapper;
 import ru.stqa.selenium.legrc.runner.RunContext;
 import ru.stqa.selenium.legrc.runner.Step;
 import ru.stqa.selenium.legrc.runner.StepOutcome;
 
-public class AbstractStepWrapper implements ResultProcessor {
+public class AbstractStepWrapper implements StepWrapper {
 
   protected Step step;
 
