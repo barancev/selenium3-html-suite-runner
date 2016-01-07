@@ -37,7 +37,7 @@ public class WaitForResult extends AbstractStepWrapper {
       stepResult = step.run(ctx) && stepResult;
     }
 
-    return false;
+    return stepResult;
   }
 
 }

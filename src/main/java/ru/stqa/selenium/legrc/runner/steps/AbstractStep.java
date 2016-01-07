@@ -26,6 +26,7 @@ public abstract class AbstractStep implements Step {
     try {
       outcome = runInternal(ctx);
     } catch (Throwable ex) {
+      outcome = new ExceptionOutcome(ex);
       result = false;
     }
     return result;
