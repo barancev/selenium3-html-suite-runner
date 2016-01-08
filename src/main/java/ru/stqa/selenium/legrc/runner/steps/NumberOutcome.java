@@ -15,7 +15,11 @@ public class NumberOutcome implements StepOutcome {
     if (expected instanceof Number) {
       return outcome.equals(expected);
     } else {
-      return false;
+      try {
+        return outcome.longValue() == Long.parseLong(expected.toString());
+      } catch (NumberFormatException ex) {
+        return false;
+      }
     }
   }
 
