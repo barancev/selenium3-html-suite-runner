@@ -2,6 +2,7 @@ package ru.stqa.selenium.legrc.runner;
 
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
+import com.beust.jcommander.ParameterException;
 import com.google.common.collect.ImmutableMap;
 import com.thoughtworks.selenium.Selenium;
 import org.cyberneko.html.parsers.DOMParser;
@@ -38,6 +39,9 @@ public class HtmlSuiteRunner implements RunContext {
 
   @Parameter(names = {"--report", "-r"}, description = "Report file", required = true)
   private String report;
+
+  @Parameter(names = {"--overwrite", "-o"}, description = "Overwrite report file")
+  private boolean overwriteReport;
 
   private WebDriver driver;
   private WebDriverBackedSelenium wdbs;
@@ -89,11 +93,24 @@ public class HtmlSuiteRunner implements RunContext {
 
   public static void main(String[] args) throws IOException, SAXException {
     HtmlSuiteRunner runner = new HtmlSuiteRunner();
-    new JCommander(runner, args);
+    JCommander cli = new JCommander(runner);
+    try {
+      cli.parse(args);
+    } catch (ParameterException ex) {
+      cli.usage();
+      return;
+    }
     runner.run();
   }
 
   private void run() throws IOException, SAXException {
+    File reportFile = new File(report);
+    if (reportFile.exists() && !overwriteReport) {
+      System.out.println("Report file already exists: " + reportFile);
+      System.out.println("If you want to overwrite existing report file use -o option");
+      return;
+    }
+
     File toRun = new File(suiteOrScenario);
 
     Node table = getTableFromHtmlFile(toRun);
