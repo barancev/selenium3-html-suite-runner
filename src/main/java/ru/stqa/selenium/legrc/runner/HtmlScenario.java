@@ -53,7 +53,9 @@ public class HtmlScenario implements HtmlRunnable {
     StringBuilder sb = new StringBuilder();
     sb.append("<div class='scenario'>\n");
     sb.append("<p>Metadata</p>\n");
-    sb.append("<table class='scenario' border='1' cellpadding='1' cellspacing='1'><tbody>\n");
+    sb.append("<table class='scenario' border='1' cellpadding='1' cellspacing='1'>\n");
+    sb.append("<thead><tr><th>Command</th><th>Arg1</th><th>Arg2</th><th>Result</th><th>Time&nbsp;(ms)</th></tr></thead>\n");
+    sb.append("<tbody>\n");
     for (Step step : steps) {
       sb.append(step.toHtml());
       sb.append("\n");

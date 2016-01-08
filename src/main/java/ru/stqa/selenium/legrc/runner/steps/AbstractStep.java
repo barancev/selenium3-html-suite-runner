@@ -8,6 +8,8 @@ import java.util.List;
 
 public abstract class AbstractStep implements Step {
 
+  private long start;
+  private long finish;
   private List<String> args;
   private StepOutcome outcome;
   protected boolean result = true;
@@ -23,11 +25,14 @@ public abstract class AbstractStep implements Step {
 
   @Override
   public boolean run(RunContext ctx) {
+    start = System.currentTimeMillis();
     try {
       outcome = runInternal(ctx);
     } catch (Throwable ex) {
       outcome = new ExceptionOutcome(ex);
       result = false;
+    } finally {
+      finish = System.currentTimeMillis();
     }
     return result;
   }
@@ -47,7 +52,7 @@ public abstract class AbstractStep implements Step {
     sb.append(String.format("<td class='arg1'>%s</td>", args.get(1)));
     sb.append(String.format("<td class='arg2'>%s</td>", args.get(2)));
     sb.append(String.format("<td class='outcome'>%s</td>", outcome));
-    sb.append("<td class='time'>Time</td>");
+    sb.append(String.format("<td class='time'>%d</td>", finish - start));
     sb.append("</tr>");
     return sb.toString();
   }
