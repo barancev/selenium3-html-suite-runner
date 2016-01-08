@@ -24,7 +24,7 @@ public class CssCountStep extends AbstractStep {
 
   @Override
   public StepOutcome runInternal(RunContext ctx) {
-    return new NumberOutcome(ctx.getWDBS().getCssCount(ctx.substitute(locator)));
+    return new NumberOutcome(ctx.getSelenium().getCssCount(ctx.substitute(locator)));
   }
 
 }

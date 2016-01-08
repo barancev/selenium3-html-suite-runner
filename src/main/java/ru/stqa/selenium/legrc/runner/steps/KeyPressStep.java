@@ -26,7 +26,7 @@ public class KeyPressStep extends AbstractStep {
 
   @Override
   public StepOutcome runInternal(RunContext ctx) {
-    ctx.getWDBS().keyPress(locator, ctx.substitute(text));
+    ctx.getSelenium().keyPress(locator, ctx.substitute(text));
     return new VoidOutcome();
   }
 }

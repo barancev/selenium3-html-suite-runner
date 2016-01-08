@@ -24,7 +24,7 @@ public class EvalStep extends AbstractStep {
 
   @Override
   public StepOutcome runInternal(RunContext ctx) {
-    return new StringOutcome(ctx.getWDBS().getEval(ctx.substitute(ctx.substitute(script))));
+    return new StringOutcome(ctx.getSelenium().getEval(ctx.substitute(ctx.substitute(script))));
   }
 
 }

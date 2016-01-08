@@ -26,7 +26,7 @@ public class ClickAtStep extends AbstractStep {
 
   @Override
   public StepOutcome runInternal(RunContext ctx) {
-    ctx.getWDBS().clickAt(ctx.substitute(locator), ctx.substitute(coords));
+    ctx.getSelenium().clickAt(ctx.substitute(locator), ctx.substitute(coords));
     return new VoidOutcome();
   }
 }

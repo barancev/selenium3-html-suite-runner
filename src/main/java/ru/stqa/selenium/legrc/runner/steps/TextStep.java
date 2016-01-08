@@ -24,7 +24,7 @@ public class TextStep extends AbstractStep {
 
   @Override
   public StepOutcome runInternal(RunContext ctx) {
-    return new StringOutcome(ctx.getWDBS().getText(ctx.substitute(locator)).replace('\n', ' '));
+    return new StringOutcome(ctx.getSelenium().getText(ctx.substitute(locator)).replace('\n', ' '));
   }
 
 }

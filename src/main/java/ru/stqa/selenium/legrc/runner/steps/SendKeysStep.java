@@ -3,6 +3,7 @@ package ru.stqa.selenium.legrc.runner.steps;
 import ru.stqa.selenium.legrc.runner.RunContext;
 import ru.stqa.selenium.legrc.runner.Step;
 import ru.stqa.selenium.legrc.runner.StepOutcome;
+import ru.stqa.selenium.legrc.runner.WebDriverBackedSelenium;
 
 import java.util.List;
 
@@ -26,7 +27,7 @@ public class SendKeysStep extends AbstractStep {
 
   @Override
   public StepOutcome runInternal(RunContext ctx) {
-    ctx.getWDBS().getCommandProcessor().doCommand(
+    ((WebDriverBackedSelenium) ctx.getSelenium()).getCommandProcessor().doCommand(
             "sendKeys", new String[] {ctx.substitute(locator), ctx.substitute(text)});
     return new VoidOutcome();
   }

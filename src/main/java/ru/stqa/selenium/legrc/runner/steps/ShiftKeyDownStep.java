@@ -21,7 +21,7 @@ public class ShiftKeyDownStep extends AbstractStep {
 
   @Override
   public StepOutcome runInternal(RunContext ctx) {
-    ctx.getWDBS().shiftKeyDown();
+    ctx.getSelenium().shiftKeyDown();
     return new VoidOutcome();
   }
 }

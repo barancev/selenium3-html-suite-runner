@@ -24,7 +24,7 @@ public class OpenStep extends AbstractStep {
 
   @Override
   public StepOutcome runInternal(RunContext ctx) {
-    ctx.getWDBS().open(ctx.substitute(url));
+    ctx.getSelenium().open(ctx.substitute(url));
     return new VoidOutcome();
   }
 

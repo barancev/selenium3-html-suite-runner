@@ -21,7 +21,7 @@ public class AltKeyUpStep extends AbstractStep {
 
   @Override
   public StepOutcome runInternal(RunContext ctx) {
-    ctx.getWDBS().altKeyUp();
+    ctx.getSelenium().altKeyUp();
     return new VoidOutcome();
   }
 }

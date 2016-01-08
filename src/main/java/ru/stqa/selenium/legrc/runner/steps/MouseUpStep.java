@@ -24,7 +24,7 @@ public class MouseUpStep extends AbstractStep {
 
   @Override
   public StepOutcome runInternal(RunContext ctx) {
-    ctx.getWDBS().mouseUp(ctx.substitute(locator));
+    ctx.getSelenium().mouseUp(ctx.substitute(locator));
     return new VoidOutcome();
   }
 }

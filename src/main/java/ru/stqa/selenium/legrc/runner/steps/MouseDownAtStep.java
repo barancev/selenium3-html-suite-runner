@@ -26,7 +26,7 @@ public class MouseDownAtStep extends AbstractStep {
 
   @Override
   public StepOutcome runInternal(RunContext ctx) {
-    ctx.getWDBS().mouseDownAt(ctx.substitute(locator), ctx.substitute(coords));
+    ctx.getSelenium().mouseDownAt(ctx.substitute(locator), ctx.substitute(coords));
     return new VoidOutcome();
   }
 }

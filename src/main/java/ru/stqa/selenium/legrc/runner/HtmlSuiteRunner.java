@@ -3,6 +3,7 @@ package ru.stqa.selenium.legrc.runner;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.google.common.collect.ImmutableMap;
+import com.thoughtworks.selenium.Selenium;
 import org.cyberneko.html.parsers.DOMParser;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -54,7 +55,7 @@ public class HtmlSuiteRunner implements RunContext {
   }
 
   @Override
-  public WebDriverBackedSelenium getWDBS() {
+  public Selenium getSelenium() {
     return wdbs;
   }
 

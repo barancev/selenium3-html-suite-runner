@@ -21,7 +21,7 @@ public class MetaKeyUpStep extends AbstractStep {
 
   @Override
   public StepOutcome runInternal(RunContext ctx) {
-    ctx.getWDBS().metaKeyUp();
+    ctx.getSelenium().metaKeyUp();
     return new VoidOutcome();
   }
 }

@@ -24,7 +24,7 @@ public class DoubleClickStep extends AbstractStep {
 
   @Override
   public StepOutcome runInternal(RunContext ctx) {
-    ctx.getWDBS().doubleClick(ctx.substitute(locator));
+    ctx.getSelenium().doubleClick(ctx.substitute(locator));
     return new VoidOutcome();
   }
 }

@@ -24,7 +24,7 @@ public class XpathCountStep extends AbstractStep {
 
   @Override
   public StepOutcome runInternal(RunContext ctx) {
-    return new NumberOutcome(ctx.getWDBS().getXpathCount(ctx.substitute(locator)));
+    return new NumberOutcome(ctx.getSelenium().getXpathCount(ctx.substitute(locator)));
   }
 
 }

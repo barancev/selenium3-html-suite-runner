@@ -13,9 +13,6 @@ import org.openqa.selenium.internal.WrapsDriver;
 
 public class WebDriverBackedSelenium extends DefaultSelenium
         implements HasCapabilities, WrapsDriver {
-  public WebDriverBackedSelenium(Supplier<WebDriver> maker, String baseUrl) {
-    super(new WebDriverCommandProcessor(baseUrl, maker));
-  }
 
   public WebDriverBackedSelenium(WebDriver baseDriver, String baseUrl) {
     super(new WebDriverCommandProcessor(baseUrl, baseDriver));

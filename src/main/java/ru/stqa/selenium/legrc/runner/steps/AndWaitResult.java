@@ -21,7 +21,7 @@ public class AndWaitResult extends AbstractStepWrapper {
 
   @Override
   public boolean afterStep(RunContext ctx) {
-    ctx.getWDBS().waitForPageToLoad("" + ctx.getTimeout());
+    ctx.getSelenium().waitForPageToLoad("" + ctx.getTimeout());
     return true;
   }
 }

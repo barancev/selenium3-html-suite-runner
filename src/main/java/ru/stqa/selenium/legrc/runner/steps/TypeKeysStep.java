@@ -26,7 +26,7 @@ public class TypeKeysStep extends AbstractStep {
 
   @Override
   public StepOutcome runInternal(RunContext ctx) {
-    ctx.getWDBS().typeKeys(locator, ctx.substitute(text));
+    ctx.getSelenium().typeKeys(locator, ctx.substitute(text));
     return new VoidOutcome();
   }
 }

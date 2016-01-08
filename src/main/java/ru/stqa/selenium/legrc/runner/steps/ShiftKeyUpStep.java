@@ -21,7 +21,7 @@ public class ShiftKeyUpStep extends AbstractStep {
 
   @Override
   public StepOutcome runInternal(RunContext ctx) {
-    ctx.getWDBS().shiftKeyUp();
+    ctx.getSelenium().shiftKeyUp();
     return new VoidOutcome();
   }
 }

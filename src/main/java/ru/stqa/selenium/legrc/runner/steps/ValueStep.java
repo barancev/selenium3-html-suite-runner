@@ -24,7 +24,7 @@ public class ValueStep extends AbstractStep {
 
   @Override
   public StepOutcome runInternal(RunContext ctx) {
-    return new StringOutcome(ctx.getWDBS().getValue(ctx.substitute(locator)));
+    return new StringOutcome(ctx.getSelenium().getValue(ctx.substitute(locator)));
   }
 
 }

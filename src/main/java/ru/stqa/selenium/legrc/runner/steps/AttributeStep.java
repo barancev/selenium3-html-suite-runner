@@ -24,7 +24,7 @@ public class AttributeStep extends AbstractStep {
 
   @Override
   public StepOutcome runInternal(RunContext ctx) {
-    return new StringOutcome(ctx.getWDBS().getAttribute(ctx.substitute(attributeLocator)));
+    return new StringOutcome(ctx.getSelenium().getAttribute(ctx.substitute(attributeLocator)));
   }
 
 }

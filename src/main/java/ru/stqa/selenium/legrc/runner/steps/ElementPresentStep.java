@@ -24,7 +24,7 @@ public class ElementPresentStep  extends AbstractStep {
 
   @Override
   public StepOutcome runInternal(RunContext ctx) {
-    return new BooleanOutcome(ctx.getWDBS().isElementPresent(ctx.substitute(locator)));
+    return new BooleanOutcome(ctx.getSelenium().isElementPresent(ctx.substitute(locator)));
   }
 
 }

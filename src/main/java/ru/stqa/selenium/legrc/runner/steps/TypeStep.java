@@ -26,7 +26,7 @@ public class TypeStep extends AbstractStep {
 
   @Override
   public StepOutcome runInternal(RunContext ctx) {
-    ctx.getWDBS().type(locator, ctx.substitute(text));
+    ctx.getSelenium().type(locator, ctx.substitute(text));
     return new VoidOutcome();
   }
 }

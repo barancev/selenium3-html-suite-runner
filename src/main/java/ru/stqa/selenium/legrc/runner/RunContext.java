@@ -1,12 +1,13 @@
 package ru.stqa.selenium.legrc.runner;
 
+import com.thoughtworks.selenium.Selenium;
 import org.openqa.selenium.WebDriver;
 
 public interface RunContext {
 
   void setDriver(WebDriver driver);
   WebDriver getDriver();
-  WebDriverBackedSelenium getWDBS();
+  Selenium getSelenium();
 
   long getTimeout();
 

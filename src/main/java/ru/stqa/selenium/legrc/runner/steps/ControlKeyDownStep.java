@@ -21,7 +21,7 @@ public class ControlKeyDownStep extends AbstractStep {
 
   @Override
   public StepOutcome runInternal(RunContext ctx) {
-    ctx.getWDBS().controlKeyDown();
+    ctx.getSelenium().controlKeyDown();
     return new VoidOutcome();
   }
 }
