@@ -38,6 +38,7 @@ public class HtmlScenario implements HtmlRunnable {
   }
 
   public boolean run(RunContext ctx) {
+    System.out.print("\n" + name + " ");
     boolean result = true;
     for (Step step : steps) {
       boolean stepResult = step.run(ctx);
