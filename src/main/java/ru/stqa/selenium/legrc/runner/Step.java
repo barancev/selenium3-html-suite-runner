@@ -11,4 +11,6 @@ public interface Step {
   StepOutcome getOutcome();
   String toHtml();
   String toHtml(String status);
+
+  boolean breaksOnFailure();
 }

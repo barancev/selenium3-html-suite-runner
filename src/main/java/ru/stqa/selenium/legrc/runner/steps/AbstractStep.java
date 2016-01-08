@@ -19,6 +19,11 @@ public abstract class AbstractStep implements Step {
   }
 
   @Override
+  public boolean breaksOnFailure() {
+    return true;
+  }
+
+  @Override
   public StepOutcome getOutcome() {
     return outcome;
   }
@@ -41,7 +46,11 @@ public abstract class AbstractStep implements Step {
 
   @Override
   public String toHtml() {
-    return toHtml(result ? "status_done" : "status_failed");
+    if (outcome == null) {
+      return toHtml("");
+    } else {
+      return toHtml(result ? "status_done" : "status_failed");
+    }
   }
 
   @Override

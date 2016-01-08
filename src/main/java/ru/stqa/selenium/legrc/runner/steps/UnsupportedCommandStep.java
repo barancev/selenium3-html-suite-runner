@@ -30,6 +30,11 @@ public class UnsupportedCommandStep implements Step {
   }
 
   @Override
+  public boolean breaksOnFailure() {
+    return false;
+  }
+
+  @Override
   public String toHtml() {
     StringBuilder sb = new StringBuilder();
     sb.append("<tr class='step'>");

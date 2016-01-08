@@ -21,6 +21,11 @@ public class VerifyResult extends AbstractStepWrapper {
   }
 
   @Override
+  public boolean breaksOnFailure() {
+    return false;
+  }
+
+  @Override
   public boolean afterStep(RunContext ctx) {
     return step.getOutcome().matches(ctx.substitute(expectedResult));
   }

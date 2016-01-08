@@ -10,6 +10,7 @@ public class AbstractStepWrapper implements StepWrapper {
   protected Step step;
   protected boolean result = true;
   protected boolean stepResult = true;
+  private StepOutcome outcome;
 
   public AbstractStepWrapper(Step step) {
     this.step = step;
@@ -19,6 +20,7 @@ public class AbstractStepWrapper implements StepWrapper {
   public boolean run(RunContext ctx) {
     stepResult = step.run(ctx);
     result = stepResult && afterStep(ctx);
+    outcome = new BooleanOutcome(result);
     return result;
   }
 
@@ -28,12 +30,21 @@ public class AbstractStepWrapper implements StepWrapper {
 
   @Override
   public StepOutcome getOutcome() {
-    return new BooleanOutcome(result);
+    return outcome;
+  }
+
+  @Override
+  public boolean breaksOnFailure() {
+    return true;
   }
 
   @Override
   public String toHtml() {
-    return step.toHtml(result ? "status_passed" : "status_failed");
+    if (outcome == null) {
+      return step.toHtml("");
+    } else {
+      return step.toHtml(result ? "status_passed" : "status_failed");
+    }
   }
 
   @Override

@@ -1,6 +1,5 @@
 package ru.stqa.selenium.legrc.runner;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -43,7 +42,16 @@ public class HtmlScenario implements HtmlRunnable {
     for (Step step : steps) {
       boolean stepResult = step.run(ctx);
       result = stepResult && result;
-      System.out.print(stepResult ? "." : "F");
+      if (stepResult) {
+        System.out.print(".");
+      } else {
+        if (!step.breaksOnFailure()) {
+          System.out.print("F");
+        } else {
+          System.out.print("X");
+          break;
+        }
+      }
     }
     finish = System.currentTimeMillis();
     return result;
