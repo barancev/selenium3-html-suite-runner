@@ -36,7 +36,7 @@ public class StepTestBase {
 
     @Override
     public long getTimeout() {
-      return 10000;
+      return 3000;
     }
 
     @Override

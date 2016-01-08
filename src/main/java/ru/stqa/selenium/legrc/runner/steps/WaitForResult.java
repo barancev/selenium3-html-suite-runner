@@ -24,20 +24,21 @@ public class WaitForResult extends AbstractStepWrapper {
   public boolean run(RunContext ctx) {
     String expectedResult = ctx.substitute(this.expectedResult);
     long start = System.currentTimeMillis();
-    stepResult = step.run(ctx);
     while (System.currentTimeMillis() < start + ctx.getTimeout()) {
+      boolean stepResult = step.run(ctx);
       if (stepResult && step.getOutcome().matches(expectedResult)) {
-        return true;
+        result = true;
+        return result;
       }
       try {
         Thread.sleep(1000);
       } catch (InterruptedException e) {
         e.printStackTrace();
       }
-      stepResult = step.run(ctx) && stepResult;
     }
 
-    return stepResult;
+    result = false;
+    return result;
   }
 
 }
