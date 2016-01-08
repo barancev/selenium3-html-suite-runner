@@ -2,19 +2,22 @@ package ru.stqa.selenium.legrc.runner;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class HtmlSuite implements HtmlRunnable {
 
-  private final File path;
+  private final String path;
   private List<HtmlScenario> scenarios = new ArrayList<HtmlScenario>();
+  private long start;
+  private long finish;
 
-  public HtmlSuite(File path) {
+  public HtmlSuite(String path) {
     this.path = path;
   }
 
   public File getFullPathToScenario(String relativePath) {
-    return new File(path.getParentFile(), relativePath);
+    return new File(new File(path).getParentFile(), relativePath);
   }
 
   public void addScenario(HtmlScenario scenario) {
@@ -31,10 +34,12 @@ public class HtmlSuite implements HtmlRunnable {
   }
 
   public boolean run(RunContext ctx) {
+    start = System.currentTimeMillis();
     boolean result = true;
     for (HtmlScenario scenario : scenarios) {
       result = scenario.run(ctx) && result;
     }
+    finish = System.currentTimeMillis();
     return result;
   }
 
@@ -42,7 +47,9 @@ public class HtmlSuite implements HtmlRunnable {
   public String toHtml() {
     StringBuilder sb = new StringBuilder();
     sb.append("<div class='suite'>\n");
-    sb.append("<p>Metadata</p>\n");
+    sb.append(String.format("<h2>Suite %s</h2>\n", path));
+    sb.append(String.format("<p>Started at: %s<br/>\n", new Date(start)));
+    sb.append(String.format("Total execution time (ms): %d</p>\n", finish - start));
     for (HtmlScenario scenario : scenarios) {
       sb.append(scenario.toHtml());
       sb.append("\n");

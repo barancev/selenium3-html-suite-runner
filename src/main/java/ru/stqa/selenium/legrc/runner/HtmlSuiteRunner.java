@@ -6,11 +6,14 @@ import com.beust.jcommander.ParameterException;
 import com.google.common.collect.ImmutableMap;
 import com.thoughtworks.selenium.Selenium;
 import org.cyberneko.html.parsers.DOMParser;
+import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.internal.BuildInfo;
 import org.openqa.selenium.remote.BrowserType;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
@@ -112,19 +115,18 @@ public class HtmlSuiteRunner implements RunContext {
     }
 
     File toRun = new File(suiteOrScenario);
-
     Node table = getTableFromHtmlFile(toRun);
     Node id = table.getAttributes().getNamedItem("id");
     
     HtmlRunnable runnable;
 
     if (id == null) {
-      HtmlScenario scenario = new HtmlScenario(toRun);
+      HtmlScenario scenario = new HtmlScenario(suiteOrScenario);
       initScenario(scenario, table);
       runnable = scenario;
 
     } else {
-      HtmlSuite suite = new HtmlSuite(toRun);
+      HtmlSuite suite = new HtmlSuite(suiteOrScenario);
       initSuite(suite, table);
       runnable = suite;
     }
@@ -175,9 +177,9 @@ public class HtmlSuiteRunner implements RunContext {
           // TODO: Suite name?
           firstRow = false;
         } else {
-          File scenarioPath = suite.getFullPathToScenario(findChildElement(row, "A")
-                  .getAttributes().getNamedItem("href").getNodeValue());
-          HtmlScenario scenario = new HtmlScenario(scenarioPath);
+          String scenarioRef = findChildElement(row, "A").getAttributes().getNamedItem("href").getNodeValue();
+          HtmlScenario scenario = new HtmlScenario(scenarioRef);
+          File scenarioPath = suite.getFullPathToScenario(scenarioRef);
           initScenario(scenario, getTableFromHtmlFile(scenarioPath));
           suite.addScenario(scenario);
         }
@@ -312,6 +314,7 @@ public class HtmlSuiteRunner implements RunContext {
     sb.append("th, td {\n" +
             "    padding-left: 0.3em;\n" +
             "    padding-right: 0.3em;\n" +
+            "    text-align: left;\n" +
             "}\n");
     sb.append(".status_done {\n" +
             "    background-color: #eeffee;\n" +
@@ -324,7 +327,12 @@ public class HtmlSuiteRunner implements RunContext {
             "}\n");
     sb.append("</style>\n</head>\n");
     sb.append("<body>\n");
+    sb.append("<h1>Test Run Report</h1>\n");
+    Capabilities caps = ((RemoteWebDriver) driver).getCapabilities();
+    sb.append(String.format("<p>Driver info: browser=%s, version=%s, platform=%s</p>\n",
+            caps.getBrowserName(), caps.getVersion(), caps.getPlatform()));
     sb.append(runnable.toHtml());
+    sb.append(String.format("<p>Selenium version: %s</p>\n", new BuildInfo().getReleaseLabel()));
     sb.append("</body>\n</html>");
     FileWriter reportWriter = new FileWriter(new File(report));
     try {

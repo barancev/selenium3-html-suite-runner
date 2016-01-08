@@ -2,20 +2,19 @@ package ru.stqa.selenium.legrc.runner;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class HtmlScenario implements HtmlRunnable {
 
   private String name;
-  private final File path;
+  private String path;
   private List<Step> steps = new ArrayList<Step>();
+  private long start;
+  private long finish;
 
-  public HtmlScenario(File path) {
+  public HtmlScenario(String path) {
     this.path = path;
-  }
-
-  public String getName() {
-    return name;
   }
 
   public void setName(String name) {
@@ -38,6 +37,7 @@ public class HtmlScenario implements HtmlRunnable {
   }
 
   public boolean run(RunContext ctx) {
+    start = System.currentTimeMillis();
     System.out.print("\n" + name + " ");
     boolean result = true;
     for (Step step : steps) {
@@ -45,6 +45,7 @@ public class HtmlScenario implements HtmlRunnable {
       result = stepResult && result;
       System.out.print(stepResult ? "." : "F");
     }
+    finish = System.currentTimeMillis();
     return result;
   }
 
@@ -52,7 +53,9 @@ public class HtmlScenario implements HtmlRunnable {
   public String toHtml() {
     StringBuilder sb = new StringBuilder();
     sb.append("<div class='scenario'>\n");
-    sb.append("<p>Metadata</p>\n");
+    sb.append(String.format("<h3>Scenario %s</h3>\n", path));
+    sb.append(String.format("<p>Started at: %s<br/>\n", new Date(start)));
+    sb.append(String.format("Total execution time (ms): %d</p>\n", finish - start));
     sb.append("<table class='scenario' border='1' cellpadding='1' cellspacing='1'>\n");
     sb.append("<thead><tr><th>Command</th><th>Arg1</th><th>Arg2</th><th>Result</th><th>Time&nbsp;(ms)</th></tr></thead>\n");
     sb.append("<tbody>\n");
