@@ -16,7 +16,7 @@ public class NumberOutcome implements StepOutcome {
       return outcome.equals(expected);
     } else {
       try {
-        return outcome.longValue() == Long.parseLong(expected.toString());
+        return outcome.doubleValue() == Double.parseDouble(expected.toString());
       } catch (NumberFormatException ex) {
         return false;
       }
