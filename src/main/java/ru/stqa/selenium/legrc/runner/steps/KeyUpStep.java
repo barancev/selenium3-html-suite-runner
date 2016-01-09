@@ -26,7 +26,7 @@ public class KeyUpStep extends AbstractStep {
 
   @Override
   public StepOutcome runInternal(RunContext ctx) {
-    ctx.getSelenium().keyUp(locator, ctx.substitute(text));
+    ctx.getSelenium().keyUp(ctx.substitute(locator), ctx.substitute(text));
     return new VoidOutcome();
   }
 }
