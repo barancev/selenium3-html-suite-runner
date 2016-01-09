@@ -1,14 +1,16 @@
 package ru.stqa.selenium.legrc.runner.steps;
 
-import ru.stqa.selenium.legrc.runner.*;
+import ru.stqa.selenium.legrc.runner.RunContext;
+import ru.stqa.selenium.legrc.runner.Step;
+import ru.stqa.selenium.legrc.runner.StepWrapper;
 
 import java.util.List;
 
-public class WaitForResult extends AbstractStepWrapper {
+public class WaitForNotResult extends AbstractStepWrapper {
 
   private String expectedResult;
 
-  public WaitForResult(Step step, String expectedResult) {
+  public WaitForNotResult(Step step, String expectedResult) {
     super(step);
     this.expectedResult = expectedResult;
   }
@@ -16,17 +18,17 @@ public class WaitForResult extends AbstractStepWrapper {
   public static class Factory implements StepWrapper.Factory {
     @Override
     public StepWrapper wrap(Step step, List<String> args) {
-      return new WaitForResult(step, args.get(2));
+      return new WaitForNotResult(step, args.get(2));
     }
   }
 
   @Override
-  public boolean runStep(RunContext ctx) {
+  public boolean run(RunContext ctx) {
     String expectedResult = ctx.substitute(this.expectedResult);
     long start = System.currentTimeMillis();
     while (System.currentTimeMillis() < start + ctx.getTimeout()) {
       boolean stepResult = step.run(ctx);
-      if (stepResult && step.getOutcome().matches(expectedResult)) {
+      if (stepResult && ! step.getOutcome().matches(expectedResult)) {
         return true;
       }
       try {

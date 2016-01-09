@@ -28,7 +28,7 @@ public class StoreResult extends AbstractStepWrapper {
 
   @Override
   public String toHtml() {
-    return step.toHtml(stepResult ? "status_done" : "status_failed");
+    return step.toHtml(result ? "status_done" : "status_failed");
   }
 
 }

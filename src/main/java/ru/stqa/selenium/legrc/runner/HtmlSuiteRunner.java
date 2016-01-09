@@ -307,9 +307,11 @@ public class HtmlSuiteRunner implements RunContext {
 
   private Map<String, StepWrapper.Factory> resultProcessorFactories = new ImmutableMap.Builder<String, StepWrapper.Factory>()
           .put("assert", new AssertResult.Factory())
+          .put("assertnot", new AssertNotResult.Factory())
           .put("verify", new VerifyResult.Factory())
           .put("store", new StoreResult.Factory())
           .put("waitfor", new WaitForResult.Factory())
+          .put("waitfornot", new WaitForNotResult.Factory())
           .put("andwait", new AndWaitResult.Factory())
           .build();
 

@@ -9,7 +9,6 @@ public class AbstractStepWrapper implements StepWrapper {
 
   protected Step step;
   protected boolean result = true;
-  protected boolean stepResult = true;
   private StepOutcome outcome;
 
   public AbstractStepWrapper(Step step) {
@@ -18,10 +17,14 @@ public class AbstractStepWrapper implements StepWrapper {
 
   @Override
   public boolean run(RunContext ctx) {
-    stepResult = step.run(ctx);
+    boolean stepResult = runStep(ctx);
     result = stepResult && afterStep(ctx);
     outcome = new BooleanOutcome(result);
     return result;
+  }
+
+  protected boolean runStep(RunContext ctx) {
+    return step.run(ctx);
   }
 
   protected boolean afterStep(RunContext ctx) {
