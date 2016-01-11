@@ -8,22 +8,27 @@ import ru.stqa.selenium.legrc.runner.steps.VoidOutcome;
 
 import java.util.List;
 
-public class WindowFocusStep extends AbstractStep {
+public class SetCursorPositionStep extends AbstractStep {
 
-  public WindowFocusStep(List<String> args) {
-    super(args, 0);
+  private String locator;
+  private String position;
+
+  public SetCursorPositionStep(List<String> args) {
+    super(args, 2);
+    this.locator = args.get(1);
+    this.position = args.get(2);
   }
 
   public static class Factory implements Step.Factory {
     @Override
     public Step create(List<String> args) {
-      return new WindowFocusStep(args);
+      return new SetCursorPositionStep(args);
     }
   }
 
   @Override
   public StepOutcome runInternal(RunContext ctx) {
-    ctx.getSelenium().windowFocus();
+    ctx.getSelenium().setCursorPosition(ctx.substitute(locator), ctx.substitute(position));
     return new VoidOutcome();
   }
 }

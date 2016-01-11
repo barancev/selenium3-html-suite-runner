@@ -10,8 +10,6 @@ import java.util.List;
 
 public class WindowMaximizeStep extends AbstractStep {
 
-  private String locator;
-
   public WindowMaximizeStep(List<String> args) {
     super(args, 0);
   }

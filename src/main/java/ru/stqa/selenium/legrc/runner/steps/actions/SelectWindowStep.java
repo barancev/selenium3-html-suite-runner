@@ -8,22 +8,25 @@ import ru.stqa.selenium.legrc.runner.steps.VoidOutcome;
 
 import java.util.List;
 
-public class WindowFocusStep extends AbstractStep {
+public class SelectWindowStep extends AbstractStep {
 
-  public WindowFocusStep(List<String> args) {
-    super(args, 0);
+  private String windowID;
+
+  public SelectWindowStep(List<String> args) {
+    super(args, 1);
+    this.windowID = args.get(1);
   }
 
   public static class Factory implements Step.Factory {
     @Override
     public Step create(List<String> args) {
-      return new WindowFocusStep(args);
+      return new SelectWindowStep(args);
     }
   }
 
   @Override
   public StepOutcome runInternal(RunContext ctx) {
-    ctx.getSelenium().windowFocus();
+    ctx.getSelenium().selectWindow(ctx.substitute(windowID));
     return new VoidOutcome();
   }
 }
