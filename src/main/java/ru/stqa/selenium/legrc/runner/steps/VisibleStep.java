@@ -11,7 +11,7 @@ public class VisibleStep extends AbstractStep {
   private String locator;
 
   public VisibleStep(List<String> args) {
-    super(args);
+    super(args, 1);
     this.locator = args.get(1);
   }
 

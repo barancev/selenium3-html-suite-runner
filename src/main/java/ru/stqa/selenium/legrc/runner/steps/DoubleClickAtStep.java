@@ -12,7 +12,7 @@ public class DoubleClickAtStep extends AbstractStep {
   private String coords;
 
   public DoubleClickAtStep(List<String> args) {
-    super(args);
+    super(args, 2);
     this.locator = args.get(1);
     this.coords = args.get(2);
   }

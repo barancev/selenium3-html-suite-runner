@@ -11,7 +11,7 @@ public class ExpressionStep extends AbstractStep {
   private String script;
 
   public ExpressionStep(List<String> args) {
-    super(args);
+    super(args, 1);
     this.script = args.get(1);
   }
 

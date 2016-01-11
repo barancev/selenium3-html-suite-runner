@@ -8,15 +8,15 @@ public class AssertResult extends AbstractStepWrapper {
 
   private String expectedResult;
 
-  public AssertResult(Step step, String expectedResult) {
+  public AssertResult(Step step) {
     super(step);
-    this.expectedResult = expectedResult;
+    this.expectedResult = step.getExtraArg();
   }
 
   public static class Factory implements StepWrapper.Factory {
     @Override
-    public StepWrapper wrap(Step step, List<String> args) {
-      return new AssertResult(step, args.get(2));
+    public StepWrapper wrap(Step step) {
+      return new AssertResult(step);
     }
   }
 

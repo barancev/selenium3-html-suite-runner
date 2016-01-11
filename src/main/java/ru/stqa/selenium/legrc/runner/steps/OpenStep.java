@@ -11,7 +11,7 @@ public class OpenStep extends AbstractStep {
   private String url;
 
   public OpenStep(List<String> args) {
-    super(args);
+    super(args, 1);
     this.url = args.get(1);
   }
 

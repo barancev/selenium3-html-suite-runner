@@ -11,11 +11,18 @@ public abstract class AbstractStep implements Step {
   private long start;
   private long finish;
   private List<String> args;
+  private int argAmount;
   private StepOutcome outcome;
   protected boolean result = true;
 
-  public AbstractStep(List<String> args) {
+  public AbstractStep(List<String> args, int argAmount) {
     this.args = args;
+    this.argAmount = argAmount;
+  }
+
+  @Override
+  public String getExtraArg() {
+    return args.size() > argAmount + 1 ? args.get(argAmount + 1) : "";
   }
 
   @Override

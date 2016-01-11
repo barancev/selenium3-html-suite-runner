@@ -4,6 +4,6 @@ import java.util.List;
 
 public interface StepWrapper extends Step {
   interface Factory {
-    StepWrapper wrap(Step step, List<String> args);
+    StepWrapper wrap(Step step);
   }
 }

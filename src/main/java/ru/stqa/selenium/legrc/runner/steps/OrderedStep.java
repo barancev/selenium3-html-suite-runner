@@ -12,7 +12,7 @@ public class OrderedStep extends AbstractStep {
   private String locator2;
 
   public OrderedStep(List<String> args) {
-    super(args);
+    super(args, 2);
     this.locator1 = args.get(1);
     this.locator2 = args.get(2);
   }

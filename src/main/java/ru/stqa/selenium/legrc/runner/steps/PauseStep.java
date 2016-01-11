@@ -11,7 +11,7 @@ public class PauseStep extends AbstractStep {
   private long duration;
 
   public PauseStep(List<String> args) {
-    super(args);
+    super(args, 1);
     this.duration = Long.parseLong(args.get(1));
   }
 

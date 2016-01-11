@@ -21,7 +21,7 @@ public class StepTests extends StepTestBase {
     List<String> args = new ImmutableList.Builder<String>()
             .add("click").add("id=test").build();
 
-    Step step = new ClickStep(args);
+    Step step = new ClickStep.Factory().create(args);
 
     step.run(context);
 
@@ -36,7 +36,7 @@ public class StepTests extends StepTestBase {
 
     when(context.getSelenium().isElementPresent(args.get(1))).thenReturn(true);
 
-    Step step = new ElementPresentStep(args);
+    Step step = new ElementPresentStep.Factory().create(args);
 
     step.run(context);
 
@@ -52,7 +52,7 @@ public class StepTests extends StepTestBase {
 
     when(context.getSelenium().isElementPresent(args.get(1))).thenReturn(false);
 
-    Step step = new ElementPresentStep(args);
+    Step step = new ElementPresentStep.Factory().create(args);
 
     step.run(context);
 
@@ -68,7 +68,7 @@ public class StepTests extends StepTestBase {
 
     when(context.getSelenium().getText(args.get(1))).thenReturn(args.get(2));
 
-    Step step = new TextStep(args);
+    Step step = new TextStep.Factory().create(args);
 
     step.run(context);
 
@@ -84,7 +84,7 @@ public class StepTests extends StepTestBase {
 
     when(context.getSelenium().getCssCount(args.get(1))).thenReturn(10);
 
-    Step step = new CssCountStep(args);
+    Step step = new CssCountStep.Factory().create(args);
 
     step.run(context);
 
@@ -100,7 +100,7 @@ public class StepTests extends StepTestBase {
 
     when(context.getSelenium().isElementPresent(args.get(1))).thenReturn(true);
 
-    StepWrapper step = new AssertResult(new ElementPresentStep(args), "");
+    StepWrapper step = new AssertResult.Factory().wrap(new ElementPresentStep.Factory().create(args));
 
     step.run(context);
 
@@ -116,7 +116,7 @@ public class StepTests extends StepTestBase {
 
     when(context.getSelenium().isElementPresent(args.get(1))).thenReturn(false);
 
-    StepWrapper step = new AssertResult(new ElementPresentStep(args), "");
+    StepWrapper step = new AssertResult.Factory().wrap(new ElementPresentStep.Factory().create(args));
 
     step.run(context);
 
@@ -132,7 +132,7 @@ public class StepTests extends StepTestBase {
 
     when(context.getSelenium().getText(args.get(1))).thenReturn(args.get(2));
 
-    StepWrapper step = new AssertResult(new TextStep(args), args.get(2));
+    StepWrapper step = new AssertResult.Factory().wrap(new TextStep.Factory().create(args));
 
     step.run(context);
 
@@ -148,7 +148,7 @@ public class StepTests extends StepTestBase {
 
     when(context.getSelenium().getText(args.get(1))).thenReturn("test");
 
-    StepWrapper step = new AssertResult(new TextStep(args), args.get(2));
+    StepWrapper step = new AssertResult.Factory().wrap(new TextStep.Factory().create(args));
 
     step.run(context);
 
@@ -164,7 +164,7 @@ public class StepTests extends StepTestBase {
 
     when(context.getSelenium().getCssCount(args.get(1))).thenReturn(10);
 
-    StepWrapper step = new AssertResult(new CssCountStep(args), args.get(2));
+    StepWrapper step = new AssertResult.Factory().wrap(new CssCountStep.Factory().create(args));
 
     step.run(context);
 
@@ -180,7 +180,7 @@ public class StepTests extends StepTestBase {
 
     when(context.getSelenium().getCssCount(args.get(1))).thenReturn(20);
 
-    StepWrapper step = new AssertResult(new CssCountStep(args), args.get(2));
+    StepWrapper step = new AssertResult.Factory().wrap(new CssCountStep.Factory().create(args));
 
     step.run(context);
 
@@ -196,7 +196,7 @@ public class StepTests extends StepTestBase {
 
     when(context.getSelenium().isElementPresent(args.get(1))).thenReturn(false).thenReturn(true);
 
-    StepWrapper step = new WaitForResult(new ElementPresentStep(args), "");
+    StepWrapper step = new WaitForResult.Factory().wrap(new ElementPresentStep.Factory().create(args));
 
     step.run(context);
 
@@ -212,13 +212,61 @@ public class StepTests extends StepTestBase {
 
     when(context.getSelenium().isElementPresent(args.get(1))).thenReturn(false);
 
-    StepWrapper step = new WaitForResult(new ElementPresentStep(args), "");
+    StepWrapper step = new WaitForResult.Factory().wrap(new ElementPresentStep.Factory().create(args));
 
     step.run(context);
 
     verify(context.getSelenium(), times(3)).isElementPresent(args.get(1));
     assertThat(step.getOutcome(), instanceOf(BooleanOutcome.class));
     assertThat((step.getOutcome()).matches(true), is(false));
+  }
+
+  @Test
+  public void testAssertStepWrapperWithNoArgumentCommand() {
+    List<String> args = new ImmutableList.Builder<String>()
+            .add("assertTitle").add("test").build();
+
+    when(context.getSelenium().getTitle()).thenReturn(args.get(1));
+
+    StepWrapper step = new AssertResult.Factory().wrap(new TitleStep.Factory().create(args));
+
+    step.run(context);
+
+    verify(context.getSelenium()).getTitle();
+    assertThat(step.getOutcome(), instanceOf(BooleanOutcome.class));
+    assertThat((step.getOutcome()).matches(true), is(true));
+  }
+
+  @Test
+  public void testAssertStepWrapperWithSingleArgumentCommand() {
+    List<String> args = new ImmutableList.Builder<String>()
+            .add("assertCssCount").add("id=test").add("10").build();
+
+    when(context.getSelenium().getCssCount(args.get(1))).thenReturn(10);
+
+    StepWrapper step = new AssertResult.Factory().wrap(new CssCountStep.Factory().create(args));
+
+    step.run(context);
+
+    verify(context.getSelenium()).getCssCount(args.get(1));
+    assertThat(step.getOutcome(), instanceOf(BooleanOutcome.class));
+    assertThat((step.getOutcome()).matches(true), is(true));
+  }
+
+  @Test
+  public void testAssertStepWrapperWithTwoArgumentCommand() {
+    List<String> args = new ImmutableList.Builder<String>()
+            .add("assertOrdered").add("id=test1").add("id=test2").build();
+
+    when(context.getSelenium().isOrdered(args.get(1), args.get(2))).thenReturn(true);
+
+    StepWrapper step = new AssertResult.Factory().wrap(new OrderedStep.Factory().create(args));
+
+    step.run(context);
+
+    verify(context.getSelenium()).isOrdered(args.get(1), args.get(2));
+    assertThat(step.getOutcome(), instanceOf(BooleanOutcome.class));
+    assertThat((step.getOutcome()).matches(true), is(true));
   }
 
 }

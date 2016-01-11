@@ -11,7 +11,7 @@ public class TextNotPresentStep extends AbstractStep {
   private String text;
 
   public TextNotPresentStep(List<String> args) {
-    super(args);
+    super(args, 1);
     this.text = args.get(1);
   }
 

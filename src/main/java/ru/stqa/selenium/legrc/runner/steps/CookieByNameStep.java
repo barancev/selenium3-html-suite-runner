@@ -11,7 +11,7 @@ public class CookieByNameStep extends AbstractStep {
   private String name;
 
   public CookieByNameStep(List<String> args) {
-    super(args);
+    super(args, 1);
     this.name = args.get(1);
   }
 

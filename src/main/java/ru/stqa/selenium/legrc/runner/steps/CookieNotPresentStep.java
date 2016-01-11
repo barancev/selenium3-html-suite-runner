@@ -11,7 +11,7 @@ public class CookieNotPresentStep extends AbstractStep {
   private String name;
 
   public CookieNotPresentStep(List<String> args) {
-    super(args);
+    super(args, 1);
     this.name = args.get(1);
   }
 

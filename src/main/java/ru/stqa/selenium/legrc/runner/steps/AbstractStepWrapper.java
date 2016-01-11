@@ -16,6 +16,11 @@ public class AbstractStepWrapper implements StepWrapper {
   }
 
   @Override
+  public String getExtraArg() {
+    return null;
+  }
+
+  @Override
   public boolean run(RunContext ctx) {
     boolean stepResult = runStep(ctx);
     result = stepResult && afterStep(ctx);

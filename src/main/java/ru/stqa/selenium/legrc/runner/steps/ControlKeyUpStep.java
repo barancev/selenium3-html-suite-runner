@@ -9,7 +9,7 @@ import java.util.List;
 public class ControlKeyUpStep extends AbstractStep {
 
   public ControlKeyUpStep(List<String> args) {
-    super(args);
+    super(args, 0);
   }
 
   public static class Factory implements Step.Factory {

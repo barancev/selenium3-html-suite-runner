@@ -11,7 +11,7 @@ public class TableStep extends AbstractStep {
   private String tableCellAddress;
 
   public TableStep(List<String> args) {
-    super(args);
+    super(args, 1);
     this.tableCellAddress = args.get(1);
   }
 

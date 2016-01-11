@@ -11,7 +11,7 @@ public class EvalStep extends AbstractStep {
   private String script;
 
   public EvalStep(List<String> args) {
-    super(args);
+    super(args, 1);
     this.script = args.get(1);
   }
 

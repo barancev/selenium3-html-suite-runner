@@ -11,7 +11,7 @@ public class MouseOutStep extends AbstractStep {
   private String locator;
 
   public MouseOutStep(List<String> args) {
-    super(args);
+    super(args, 1);
     this.locator = args.get(1);
   }
 

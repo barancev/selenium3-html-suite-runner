@@ -9,7 +9,7 @@ import java.util.List;
 public class PromptStep extends AbstractStep {
 
   public PromptStep(List<String> args) {
-    super(args);
+    super(args, 0);
   }
 
   public static class Factory implements Step.Factory {

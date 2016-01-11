@@ -11,7 +11,7 @@ public class ValueStep extends AbstractStep {
   private String locator;
 
   public ValueStep(List<String> args) {
-    super(args);
+    super(args, 1);
     this.locator = args.get(1);
   }
 

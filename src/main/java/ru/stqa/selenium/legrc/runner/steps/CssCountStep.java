@@ -11,7 +11,7 @@ public class CssCountStep extends AbstractStep {
   private String locator;
 
   public CssCountStep(List<String> args) {
-    super(args);
+    super(args, 1);
     this.locator = args.get(1);
   }
 

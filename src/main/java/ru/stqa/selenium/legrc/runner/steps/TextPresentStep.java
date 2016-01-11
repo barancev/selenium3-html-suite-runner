@@ -11,7 +11,7 @@ public class TextPresentStep extends AbstractStep {
   private String text;
 
   public TextPresentStep(List<String> args) {
-    super(args);
+    super(args, 1);
     this.text = args.get(1);
   }
 

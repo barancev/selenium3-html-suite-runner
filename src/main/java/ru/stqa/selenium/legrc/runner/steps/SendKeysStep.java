@@ -13,7 +13,7 @@ public class SendKeysStep extends AbstractStep {
   private String text;
 
   public SendKeysStep(List<String> args) {
-    super(args);
+    super(args, 2);
     this.locator = args.get(1);
     this.text = args.get(2);
   }

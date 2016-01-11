@@ -235,7 +235,7 @@ public class HtmlSuiteRunner implements RunContext {
     Step step = factory.create(args);
 
     if (resultProcessor != null) {
-      step = resultProcessorFactories.get(resultProcessor.toLowerCase()).wrap(step, args);
+      step = resultProcessorFactories.get(resultProcessor.toLowerCase()).wrap(step);
     }
 
     return step;

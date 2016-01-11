@@ -8,15 +8,15 @@ public class WaitForResult extends AbstractStepWrapper {
 
   private String expectedResult;
 
-  public WaitForResult(Step step, String expectedResult) {
+  public WaitForResult(Step step) {
     super(step);
-    this.expectedResult = expectedResult;
+    this.expectedResult = step.getExtraArg();
   }
 
   public static class Factory implements StepWrapper.Factory {
     @Override
-    public StepWrapper wrap(Step step, List<String> args) {
-      return new WaitForResult(step, args.get(2));
+    public StepWrapper wrap(Step step) {
+      return new WaitForResult(step);
     }
   }
 

@@ -8,15 +8,15 @@ public class StoreResult extends AbstractStepWrapper {
 
   private String varName;
 
-  public StoreResult(Step step, String varName) {
+  public StoreResult(Step step) {
     super(step);
-    this.varName = varName;
+    this.varName = step.getExtraArg();
   }
 
   public static class Factory implements StepWrapper.Factory {
     @Override
-    public StepWrapper wrap(Step step, List<String> args) {
-      return new StoreResult(step, args.get(2));
+    public StepWrapper wrap(Step step) {
+      return new StoreResult(step);
     }
   }
 

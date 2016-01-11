@@ -14,7 +14,7 @@ public class AndWaitResult extends AbstractStepWrapper {
 
   public static class Factory implements StepWrapper.Factory {
     @Override
-    public StepWrapper wrap(Step step, List<String> args) {
+    public StepWrapper wrap(Step step) {
       return new AndWaitResult(step);
     }
   }

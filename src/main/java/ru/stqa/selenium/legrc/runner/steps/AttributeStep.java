@@ -11,7 +11,7 @@ public class AttributeStep extends AbstractStep {
   private String attributeLocator;
 
   public AttributeStep(List<String> args) {
-    super(args);
+    super(args, 1);
     this.attributeLocator = args.get(1);
   }
 

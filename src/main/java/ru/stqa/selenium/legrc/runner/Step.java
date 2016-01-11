@@ -7,6 +7,7 @@ public interface Step {
     Step create(List<String> args);
   }
 
+  String getExtraArg();
   boolean run(RunContext ctx);
   StepOutcome getOutcome();
   String toHtml();

@@ -12,7 +12,7 @@ public class TypeStep extends AbstractStep {
   private String text;
 
   public TypeStep(List<String> args) {
-    super(args);
+    super(args, 2);
     this.locator = args.get(1);
     this.text = args.get(2);
   }
