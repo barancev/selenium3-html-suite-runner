@@ -4,6 +4,8 @@ import com.google.common.collect.ImmutableList;
 import org.junit.Test;
 import ru.stqa.selenium.legrc.runner.Step;
 import ru.stqa.selenium.legrc.runner.StepWrapper;
+import ru.stqa.selenium.legrc.runner.steps.accessors.*;
+import ru.stqa.selenium.legrc.runner.steps.actions.ClickStep;
 
 import java.util.List;
 

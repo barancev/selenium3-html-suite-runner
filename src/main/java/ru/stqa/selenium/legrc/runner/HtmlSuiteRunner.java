@@ -18,6 +18,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 import ru.stqa.selenium.legrc.runner.steps.*;
+import ru.stqa.selenium.legrc.runner.steps.accessors.*;
+import ru.stqa.selenium.legrc.runner.steps.actions.*;
 
 import java.io.File;
 import java.io.FileWriter;
