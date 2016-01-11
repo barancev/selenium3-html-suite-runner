@@ -223,6 +223,8 @@ public class HtmlSuiteRunner implements RunContext {
       return new WaitForFrameToLoadStep.Factory().create(args);
     } else if ("waitforcondition".equals(command.toLowerCase())) {
       return new WaitForConditionStep.Factory().create(args);
+    } else if ("store".equals(command.toLowerCase())) {
+      return new ExpressionStep.Factory().create(args);
     }
 
     String resultProcessor = null;
