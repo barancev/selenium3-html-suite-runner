@@ -213,23 +213,34 @@ public class HtmlSuiteRunner implements RunContext {
   }
 
   private Step createStep(List<String> args) {
-    String command = args.get(0);
+    String command = args.get(0).toLowerCase();
+
+    if ("waitforpagetoload".equals(command.toLowerCase())) {
+      return new WaitForPageToLoadStep.Factory().create(args);
+    } else if ("waitforpopup".equals(command.toLowerCase())) {
+      return new WaitForPopUpStep.Factory().create(args);
+    } else if ("waitforframetoload".equals(command.toLowerCase())) {
+      return new WaitForFrameToLoadStep.Factory().create(args);
+    } else if ("waitforcondition".equals(command.toLowerCase())) {
+      return new WaitForConditionStep.Factory().create(args);
+    }
+
     String resultProcessor = null;
-    Pattern p = Pattern.compile("(store|assert|verify|waitFor)(.*)");
+    Pattern p = Pattern.compile("(store|assert|verify|waitfor)(.*)");
     Matcher m = p.matcher(command);
     if (m.matches()) {
       resultProcessor = m.group(1);
       command = m.group(2);
     }
 
-    Pattern p2 = Pattern.compile("(.*)(AndWait)");
+    Pattern p2 = Pattern.compile("(.*)(andwait)");
     Matcher m2 = p2.matcher(command);
     if (m2.matches()) {
       resultProcessor = m2.group(2);
       command = m2.group(1);
     }
 
-    Step.Factory factory = stepFactories.get(command.toLowerCase());
+    Step.Factory factory = stepFactories.get(command);
     if (factory == null) {
       return new UnsupportedCommandStep(args);
     }
@@ -237,7 +248,7 @@ public class HtmlSuiteRunner implements RunContext {
     Step step = factory.create(args);
 
     if (resultProcessor != null) {
-      step = resultProcessorFactories.get(resultProcessor.toLowerCase()).wrap(step);
+      step = resultProcessorFactories.get(resultProcessor).wrap(step);
     }
 
     return step;
