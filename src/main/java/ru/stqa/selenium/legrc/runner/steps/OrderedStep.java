@@ -6,25 +6,26 @@ import ru.stqa.selenium.legrc.runner.StepOutcome;
 
 import java.util.List;
 
-public class EvalStep extends AbstractStep {
+public class OrderedStep extends AbstractStep {
 
-  private String script;
+  private String locator1;
+  private String locator2;
 
-  public EvalStep(List<String> args) {
+  public OrderedStep(List<String> args) {
     super(args);
-    this.script = args.get(1);
+    this.locator1 = args.get(1);
+    this.locator2 = args.get(2);
   }
 
   public static class Factory implements Step.Factory {
     @Override
     public Step create(List<String> args) {
-      return new EvalStep(args);
+      return new OrderedStep(args);
     }
   }
 
   @Override
   public StepOutcome runInternal(RunContext ctx) {
-    return new StringOutcome(ctx.getSelenium().getEval(ctx.substitute(script)));
+    return new BooleanOutcome(ctx.getSelenium().isOrdered(ctx.substitute(locator1), ctx.substitute(locator2)));
   }
-
 }

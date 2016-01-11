@@ -6,11 +6,11 @@ import ru.stqa.selenium.legrc.runner.StepOutcome;
 
 import java.util.List;
 
-public class EvalStep extends AbstractStep {
+public class ExpressionStep extends AbstractStep {
 
   private String script;
 
-  public EvalStep(List<String> args) {
+  public ExpressionStep(List<String> args) {
     super(args);
     this.script = args.get(1);
   }
@@ -18,13 +18,13 @@ public class EvalStep extends AbstractStep {
   public static class Factory implements Step.Factory {
     @Override
     public Step create(List<String> args) {
-      return new EvalStep(args);
+      return new ExpressionStep(args);
     }
   }
 
   @Override
   public StepOutcome runInternal(RunContext ctx) {
-    return new StringOutcome(ctx.getSelenium().getEval(ctx.substitute(script)));
+    return new StringOutcome(ctx.getSelenium().getExpression(ctx.substitute(script)));
   }
 
 }
