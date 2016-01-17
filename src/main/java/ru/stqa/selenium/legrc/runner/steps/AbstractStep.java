@@ -52,8 +52,8 @@ public class AbstractStep implements Step {
   public boolean run(RunContext ctx) {
     start = System.currentTimeMillis();
     try {
+      result = true; // default; runInternal can overwrite the result
       outcome = runInternal(ctx);
-      result = true;
     } catch (Throwable ex) {
       outcome = new ExceptionOutcome(ex);
       result = false;

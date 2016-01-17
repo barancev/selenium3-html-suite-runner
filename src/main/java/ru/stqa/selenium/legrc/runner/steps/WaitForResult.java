@@ -21,13 +21,15 @@ public class WaitForResult extends AbstractStepWrapper {
   }
 
   @Override
-  public boolean runStep(RunContext ctx) {
+  public StepOutcome runInternal(RunContext ctx) {
     String expectedResult = ctx.substitute(this.expectedResult);
+    int count = 0;
     long start = System.currentTimeMillis();
     while (System.currentTimeMillis() < start + ctx.getTimeout()) {
       boolean stepResult = step.run(ctx);
+      count++;
       if (stepResult && step.getOutcome().matches(expectedResult)) {
-        return true;
+        return new BooleanOutcome(true);
       }
       try {
         Thread.sleep(1000);
@@ -36,7 +38,8 @@ public class WaitForResult extends AbstractStepWrapper {
       }
     }
 
-    return false;
+    result = false;
+    return new BooleanOutcome(false);
   }
 
 }
