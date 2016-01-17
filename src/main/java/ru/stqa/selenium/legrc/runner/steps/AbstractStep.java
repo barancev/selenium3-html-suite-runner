@@ -14,8 +14,9 @@ public class AbstractStep implements Step {
   private long finish;
   private List<String> args;
   private int argAmount;
-  private StepOutcome outcome = new VoidOutcome();
+  protected StepOutcome outcome = new VoidOutcome();
   protected boolean result = true;
+  protected boolean executed = false;
 
   public AbstractStep(List<String> args, int argAmount) {
     this.args = args;
@@ -59,6 +60,7 @@ public class AbstractStep implements Step {
     } finally {
       finish = System.currentTimeMillis();
     }
+    executed = true;
     return result;
   }
 
@@ -68,11 +70,7 @@ public class AbstractStep implements Step {
 
   @Override
   public String toHtml() {
-    if (outcome == null) {
-      return toHtml("");
-    } else {
-      return toHtml(result ? "status_done" : "status_failed");
-    }
+    return toHtml(executed ? (result ? "status_done" : "status_failed") : "status_skipped");
   }
 
   @Override

@@ -8,8 +8,6 @@ import ru.stqa.selenium.legrc.runner.StepOutcome;
 public class AbstractStepWrapper extends AbstractStep implements StepWrapper {
 
   protected Step step;
-  protected boolean result = true;
-  private StepOutcome outcome = new BooleanOutcome(false);
 
   public AbstractStepWrapper(Step step) {
     super(step.getArgs(), step.getArgAmount());
@@ -38,16 +36,7 @@ public class AbstractStepWrapper extends AbstractStep implements StepWrapper {
   };
 
   @Override
-  public StepOutcome getOutcome() {
-    return outcome;
-  }
-
-  @Override
   public String toHtml() {
-    if (outcome == null) {
-      return super.toHtml("");
-    } else {
-      return super.toHtml(result ? "status_passed" : "status_failed");
-    }
+    return toHtml(executed ? (result ? "status_passed" : "status_failed") : "status_skipped");
   }
 }
