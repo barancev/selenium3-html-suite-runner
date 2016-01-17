@@ -63,6 +63,7 @@ public class HtmlSuiteRunner implements RunContext {
     return driver;
   }
 
+  @SuppressWarnings("deprecation")
   @Override
   public Selenium getSelenium() {
     return wdbs;
