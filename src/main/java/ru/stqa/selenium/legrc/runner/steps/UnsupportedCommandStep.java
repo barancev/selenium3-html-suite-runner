@@ -14,11 +14,6 @@ public class UnsupportedCommandStep extends AbstractStep {
   }
 
   @Override
-  protected StepOutcome runInternal(RunContext ctx) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
   public StepOutcome getOutcome() {
     return new VoidOutcome();
   }

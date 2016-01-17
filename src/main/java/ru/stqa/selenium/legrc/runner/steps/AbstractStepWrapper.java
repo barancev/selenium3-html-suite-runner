@@ -5,27 +5,28 @@ import ru.stqa.selenium.legrc.runner.RunContext;
 import ru.stqa.selenium.legrc.runner.Step;
 import ru.stqa.selenium.legrc.runner.StepOutcome;
 
-public class AbstractStepWrapper implements StepWrapper {
+public class AbstractStepWrapper extends AbstractStep implements StepWrapper {
 
   protected Step step;
   protected boolean result = true;
   private StepOutcome outcome;
 
   public AbstractStepWrapper(Step step) {
+    super(step.getArgs(), step.getArgAmount());
     this.step = step;
   }
 
   @Override
   public String getExtraArg() {
-    return null;
+    return super.getExtraArg();
   }
 
   @Override
-  public boolean run(RunContext ctx) {
+  public StepOutcome runInternal(RunContext ctx) {
     boolean stepResult = runStep(ctx);
     result = stepResult && afterStep(ctx);
     outcome = new BooleanOutcome(result);
-    return result;
+    return outcome;
   }
 
   protected boolean runStep(RunContext ctx) {
@@ -42,21 +43,11 @@ public class AbstractStepWrapper implements StepWrapper {
   }
 
   @Override
-  public boolean breaksOnFailure() {
-    return true;
-  }
-
-  @Override
   public String toHtml() {
     if (outcome == null) {
-      return step.toHtml("");
+      return super.toHtml("");
     } else {
-      return step.toHtml(result ? "status_passed" : "status_failed");
+      return super.toHtml(result ? "status_passed" : "status_failed");
     }
-  }
-
-  @Override
-  public String toHtml(String status) {
-    return step.toHtml(status);
   }
 }

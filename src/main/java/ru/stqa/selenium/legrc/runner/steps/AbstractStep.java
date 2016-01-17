@@ -6,7 +6,7 @@ import ru.stqa.selenium.legrc.runner.StepOutcome;
 
 import java.util.List;
 
-public abstract class AbstractStep implements Step {
+public class AbstractStep implements Step {
 
   private long start;
   private long finish;
@@ -18,6 +18,16 @@ public abstract class AbstractStep implements Step {
   public AbstractStep(List<String> args, int argAmount) {
     this.args = args;
     this.argAmount = argAmount;
+  }
+
+  @Override
+  public List<String> getArgs() {
+    return args;
+  }
+
+  @Override
+  public int getArgAmount() {
+    return argAmount;
   }
 
   @Override
@@ -40,6 +50,7 @@ public abstract class AbstractStep implements Step {
     start = System.currentTimeMillis();
     try {
       outcome = runInternal(ctx);
+      result = true;
     } catch (Throwable ex) {
       outcome = new ExceptionOutcome(ex);
       result = false;
@@ -49,7 +60,9 @@ public abstract class AbstractStep implements Step {
     return result;
   }
 
-  protected abstract StepOutcome runInternal(RunContext ctx);
+  protected StepOutcome runInternal(RunContext ctx) {
+    throw new UnsupportedOperationException();
+  }
 
   @Override
   public String toHtml() {

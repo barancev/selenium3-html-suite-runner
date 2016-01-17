@@ -7,6 +7,8 @@ public interface Step {
     Step create(List<String> args);
   }
 
+  List<String> getArgs();
+  int getArgAmount();
   String getExtraArg();
   boolean run(RunContext ctx);
   StepOutcome getOutcome();
