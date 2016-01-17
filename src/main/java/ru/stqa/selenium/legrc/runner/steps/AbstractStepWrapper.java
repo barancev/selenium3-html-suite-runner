@@ -9,7 +9,7 @@ public class AbstractStepWrapper extends AbstractStep implements StepWrapper {
 
   protected Step step;
   protected boolean result = true;
-  private StepOutcome outcome;
+  private StepOutcome outcome = new BooleanOutcome(false);
 
   public AbstractStepWrapper(Step step) {
     super(step.getArgs(), step.getArgAmount());

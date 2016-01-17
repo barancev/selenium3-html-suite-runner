@@ -1,5 +1,7 @@
 package ru.stqa.selenium.legrc.runner.steps;
 
+import com.google.common.escape.Escaper;
+import com.google.common.html.HtmlEscapers;
 import ru.stqa.selenium.legrc.runner.RunContext;
 import ru.stqa.selenium.legrc.runner.Step;
 import ru.stqa.selenium.legrc.runner.StepOutcome;
@@ -12,7 +14,7 @@ public class AbstractStep implements Step {
   private long finish;
   private List<String> args;
   private int argAmount;
-  private StepOutcome outcome;
+  private StepOutcome outcome = new VoidOutcome();
   protected boolean result = true;
 
   public AbstractStep(List<String> args, int argAmount) {
@@ -76,11 +78,12 @@ public class AbstractStep implements Step {
   @Override
   public String toHtml(String status) {
     StringBuilder sb = new StringBuilder();
+    Escaper escaper = HtmlEscapers.htmlEscaper();
     sb.append(String.format("<tr class='step %s'>", status));
-    sb.append(String.format("<td class='command'>%s</td>", args.get(0)));
-    sb.append(String.format("<td class='arg1'>%s</td>", args.get(1)));
-    sb.append(String.format("<td class='arg2'>%s</td>", args.get(2)));
-    sb.append(String.format("<td class='outcome'>%s</td>", outcome));
+    sb.append(String.format("<td class='command'>%s</td>", escaper.escape(getArgs().get(0))));
+    sb.append(String.format("<td class='arg1'>%s</td>", escaper.escape(getArgs().get(1))));
+    sb.append(String.format("<td class='arg2'>%s</td>", escaper.escape(getArgs().get(2))));
+    sb.append(String.format("<td class='outcome'>%s</td>", escaper.escape(getOutcome().toString())));
     sb.append(String.format("<td class='time'>%d</td>", finish - start));
     sb.append("</tr>");
     return sb.toString();

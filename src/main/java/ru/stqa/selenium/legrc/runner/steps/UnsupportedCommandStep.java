@@ -14,13 +14,13 @@ public class UnsupportedCommandStep extends AbstractStep {
   }
 
   @Override
-  public StepOutcome getOutcome() {
-    return new VoidOutcome();
+  public boolean breaksOnFailure() {
+    return false;
   }
 
   @Override
-  public boolean breaksOnFailure() {
-    return false;
+  public StepOutcome getOutcome() {
+    return new StringOutcome("Operation is not supported");
   }
 
 }
