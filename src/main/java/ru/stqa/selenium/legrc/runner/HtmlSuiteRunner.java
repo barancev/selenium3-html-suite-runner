@@ -133,16 +133,19 @@ public class HtmlSuiteRunner implements RunContext {
       initSuite(suite, table);
       runnable = suite;
     }
-    
+
     setDriver(createDriver(browser));
-    runnable.run(this);
+    try {
+      runnable.run(this);
+    } finally {
+      getDriver().quit();
+    }
     generateReport(runnable);
-    getDriver().quit();
   }
 
   private Node getTableFromHtmlFile(File htmlFile) throws IOException, SAXException {
     DOMParser parser = new DOMParser();
-    parser.parse(htmlFile.getAbsolutePath());
+    parser.parse(htmlFile.toURI().toString());
     Document doc = parser.getDocument();
 
     return doc.getElementsByTagName("TABLE").item(0);
