@@ -20,7 +20,7 @@ public class ExceptionOutcome implements StepOutcome {
     if (ex instanceof UnsupportedOperationException) {
       return "Unsupported operation " + ex.getMessage();
     } else {
-      return ex.getMessage();
+      return ex.getMessage().split("[\\r\\n]+")[0];
     }
   }
 }
