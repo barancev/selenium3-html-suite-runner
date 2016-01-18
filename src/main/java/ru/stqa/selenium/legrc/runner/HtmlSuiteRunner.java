@@ -456,8 +456,9 @@ public class HtmlSuiteRunner implements RunContext {
     sb.append("</style>\n</head>\n");
     sb.append("<body>\n");
     sb.append("<h1>Test Run Report</h1>\n");
+    sb.append(String.format("<p>Base URL: %s<br/>\n", baseUrl));
     Capabilities caps = ((RemoteWebDriver) driver).getCapabilities();
-    sb.append(String.format("<p>Driver info: browser=%s, version=%s, platform=%s</p>\n",
+    sb.append(String.format("Driver info: browser=%s, version=%s, platform=%s</p>\n",
             caps.getBrowserName(), caps.getVersion(), caps.getPlatform()));
     sb.append(runnable.toHtml());
     sb.append(String.format("<p>Selenium version: %s</p>\n", new BuildInfo().getReleaseLabel()));
