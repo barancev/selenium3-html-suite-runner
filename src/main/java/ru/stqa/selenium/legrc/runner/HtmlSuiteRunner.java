@@ -211,6 +211,8 @@ public class HtmlSuiteRunner implements RunContext {
           cell = cell.getNextSibling();
         }
         scenario.addStep(createStep(args));
+      } else if (row.getNodeType() == Node.COMMENT_NODE) {
+        scenario.addStep(new CommentStep(row.getTextContent()));
       }
       row = row.getNextSibling();
     }
@@ -435,6 +437,9 @@ public class HtmlSuiteRunner implements RunContext {
             "    padding-right: 0.3em;\n" +
             "    text-align: left;\n" +
             "}\n");
+    sb.append("th {\n" +
+            "    background-color: #e5e5ff;\n" +
+            "}\n");
     sb.append(".status_done {\n" +
             "    background-color: #eeffee;\n" +
             "}\n");
@@ -443,6 +448,10 @@ public class HtmlSuiteRunner implements RunContext {
             "}\n");
     sb.append(".status_failed {\n" +
             "    background-color: #ffcccc;\n" +
+            "}\n");
+    sb.append("tr.comment {\n" +
+            "    color: #0000ff;\n" +
+            "    background-color: #ffffff;\n" +
             "}\n");
     sb.append("</style>\n</head>\n");
     sb.append("<body>\n");
