@@ -3,12 +3,7 @@ package ru.stqa.selenium.legrc.runner;
 import com.google.common.collect.ImmutableMap;
 import org.cyberneko.html.parsers.DOMParser;
 import org.openqa.selenium.Capabilities;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.internal.BuildInfo;
-import org.openqa.selenium.remote.BrowserType;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -66,7 +61,7 @@ public class HtmlSuiteRunner {
       runnable = suite;
     }
 
-    ctx.setDriver(createDriver(options.browser));
+    ctx.setDriver(new DriverFactory(options).createDriver());
     try {
       runnable.run(ctx);
     } finally {
@@ -344,18 +339,6 @@ public class HtmlSuiteRunner {
           .put("waitfornot", new WaitForNotResult.Factory())
           .put("andwait", new AndWaitResult.Factory())
           .build();
-
-  private WebDriver createDriver(String browser) {
-    if (browser.equals(BrowserType.FIREFOX)) {
-      return new FirefoxDriver();
-    } else if (browser.equals(BrowserType.CHROME)) {
-      return new ChromeDriver();
-    } else if (browser.equals(BrowserType.IE)) {
-      return new InternetExplorerDriver();
-    } else {
-      return null;
-    }
-  }
 
   private void generateReport(HtmlRunnable runnable) throws IOException {
     StringBuilder sb = new StringBuilder();
