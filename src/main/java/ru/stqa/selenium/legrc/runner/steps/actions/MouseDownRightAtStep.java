@@ -16,7 +16,7 @@ public class MouseDownRightAtStep extends AbstractStep {
   public MouseDownRightAtStep(List<String> args) {
     super(args, 2);
     this.locator = args.get(1);
-    this.coords = args.get(2);
+    this.coords = coords(args.get(2));
   }
 
   public static class Factory implements Step.Factory {

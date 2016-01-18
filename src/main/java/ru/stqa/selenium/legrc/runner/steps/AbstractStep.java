@@ -64,6 +64,10 @@ public class AbstractStep implements Step {
     return result;
   }
 
+  protected String coords(String s) {
+    return (null == s || "".equals(s)) ? "0,0" : s;
+  }
+
   protected StepOutcome runInternal(RunContext ctx) {
     throw new UnsupportedOperationException();
   }
