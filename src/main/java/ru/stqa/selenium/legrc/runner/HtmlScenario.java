@@ -1,5 +1,9 @@
 package ru.stqa.selenium.legrc.runner;
 
+import org.w3c.dom.Node;
+import ru.stqa.selenium.legrc.runner.steps.CommentStep;
+import ru.stqa.selenium.legrc.runner.steps.StepFactory;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -9,14 +13,16 @@ public class HtmlScenario implements HtmlRunnable {
   private static long counter = 0;
   private String name;
   private String path;
+  private StepFactory stepFactory;
   private long id;
   private List<Step> steps = new ArrayList<Step>();
   boolean result = true;
   private long start;
   private long finish;
 
-  public HtmlScenario(String path) {
+  public HtmlScenario(String path, StepFactory stepFactory) {
     this.path = path;
+    this.stepFactory = stepFactory;
     this.id = ++counter;
   }
 
@@ -53,6 +59,30 @@ public class HtmlScenario implements HtmlRunnable {
       builder.append("\n");
     }
     return builder.toString();
+  }
+
+  protected void loadFrom(Node table) {
+    Node thead = HtmlParserUtils.findChildElement(table, "THEAD");
+    setName(thead.getTextContent().trim());
+
+    Node tbody = HtmlParserUtils.findChildElement(table, "TBODY");
+    Node row = tbody.getFirstChild();
+    while (row != null) {
+      if (row.getNodeType() == Node.ELEMENT_NODE) {
+        List<String> args = new ArrayList<String>();
+        Node cell = row.getFirstChild();
+        while (cell != null) {
+          if (cell.getNodeType() == Node.ELEMENT_NODE) {
+            args.add(cell.getTextContent().trim());
+          }
+          cell = cell.getNextSibling();
+        }
+        addStep(stepFactory.createStep(args));
+      } else if (row.getNodeType() == Node.COMMENT_NODE) {
+        addStep(new CommentStep(row.getTextContent()));
+      }
+      row = row.getNextSibling();
+    }
   }
 
   public boolean run(RunContext ctx) {

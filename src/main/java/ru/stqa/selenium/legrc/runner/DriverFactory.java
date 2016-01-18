@@ -42,7 +42,7 @@ public class DriverFactory {
     WebDriver getDriver(CliOptions options);
   }
 
-  private static Map<String, DriverSupplier> driverSuppliers = new ImmutableMap.Builder<String, DriverSupplier>()
+  private Map<String, DriverSupplier> driverSuppliers = new ImmutableMap.Builder<String, DriverSupplier>()
           .put(BrowserType.FIREFOX, new DriverSupplier() {
             @Override
             public WebDriver getDriver(CliOptions options) {

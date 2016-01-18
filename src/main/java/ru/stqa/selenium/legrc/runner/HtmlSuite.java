@@ -1,6 +1,11 @@
 package ru.stqa.selenium.legrc.runner;
 
+import org.w3c.dom.Node;
+import org.xml.sax.SAXException;
+import ru.stqa.selenium.legrc.runner.steps.StepFactory;
+
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -8,12 +13,14 @@ import java.util.List;
 public class HtmlSuite implements HtmlRunnable {
 
   private final String path;
+  private final StepFactory stepFactory;
   private List<HtmlScenario> scenarios = new ArrayList<HtmlScenario>();
   private long start;
   private long finish;
 
-  public HtmlSuite(String path) {
+  public HtmlSuite(String path, StepFactory stepFactory) {
     this.path = path;
+    this.stepFactory = stepFactory;
   }
 
   public File getFullPathToScenario(String relativePath) {
@@ -31,6 +38,27 @@ public class HtmlSuite implements HtmlRunnable {
       builder.append("\n");
     }
     return builder.toString();
+  }
+
+  protected void loadFrom(Node table) throws IOException, SAXException {
+    Node tbody = HtmlParserUtils.findChildElement(table, "TBODY");
+    Node row = tbody.getFirstChild();
+    boolean firstRow = true;
+    while (row != null) {
+      if (row.getNodeType() == Node.ELEMENT_NODE) {
+        if (firstRow) {
+          // TODO: Suite name?
+          firstRow = false;
+        } else {
+          String scenarioRef = HtmlParserUtils.findChildElement(row, "A").getAttributes().getNamedItem("href").getNodeValue();
+          HtmlScenario scenario = new HtmlScenario(scenarioRef, stepFactory);
+          File scenarioPath = getFullPathToScenario(scenarioRef);
+          scenario.loadFrom(HtmlParserUtils.getTableFromHtmlFile(scenarioPath));
+          addScenario(scenario);
+        }
+      }
+      row = row.getNextSibling();
+    }
   }
 
   public boolean run(RunContext ctx) {
