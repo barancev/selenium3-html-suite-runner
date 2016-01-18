@@ -305,6 +305,7 @@ public class HtmlSuiteRunner implements RunContext {
           .put("draganddrop", new DragAndDropStep.Factory())
           .put("draganddroptoobject", new DragAndDropToObjectStep.Factory())
           .put("dragdrop", new DragDropStep.Factory())
+          .put("echo", new EchoStep.Factory())
           .put("editable", new EditableStep.Factory())
           .put("elementheight", new ElementHeightStep.Factory())
           .put("elementpresent", new ElementPresentStep.Factory())
