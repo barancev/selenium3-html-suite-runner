@@ -1,11 +1,9 @@
 package ru.stqa.selenium.legrc.runner;
 
 import com.google.common.collect.ImmutableMap;
-import org.cyberneko.html.parsers.DOMParser;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.internal.BuildInfo;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 import ru.stqa.selenium.legrc.runner.steps.*;
@@ -53,7 +51,7 @@ public class HtmlSuiteRunner {
 
   private boolean prepareRunnable() throws IOException, SAXException {
     File toRun = new File(options.suiteOrScenario);
-    Node table = getTableFromHtmlFile(toRun);
+    Node table = HtmlParserUtils.getTableFromHtmlFile(toRun);
     Node id = table.getAttributes().getNamedItem("id");
 
     if (id == null) {
@@ -83,38 +81,8 @@ public class HtmlSuiteRunner {
     }
   }
 
-  private Node getTableFromHtmlFile(File htmlFile) throws IOException, SAXException {
-    DOMParser parser = new DOMParser();
-    parser.parse(htmlFile.toURI().toString());
-    Document doc = parser.getDocument();
-
-    return doc.getElementsByTagName("TABLE").item(0);
-  }
-
-  private Node findChildElement(Node node, String tagName) {
-    if (node.getNodeType() == Node.ELEMENT_NODE && tagName.equals(node.getNodeName())) {
-      return node;
-    }
-
-    Node child = node.getFirstChild();
-    while(child != null) {
-      if (child.getNodeType() == Node.ELEMENT_NODE) {
-        if (tagName.equals(child.getNodeName())) {
-          return child;
-        } else {
-          Node found = findChildElement(child, tagName);
-          if (found != null) {
-            return found;
-          }
-        }
-      }
-      child = child.getNextSibling();
-    }
-    return null;
-  }
-
   private void initSuite(HtmlSuite suite, Node table) throws IOException, SAXException {
-    Node tbody = findChildElement(table, "TBODY");
+    Node tbody = HtmlParserUtils.findChildElement(table, "TBODY");
     Node row = tbody.getFirstChild();
     boolean firstRow = true;
     while (row != null) {
@@ -123,10 +91,10 @@ public class HtmlSuiteRunner {
           // TODO: Suite name?
           firstRow = false;
         } else {
-          String scenarioRef = findChildElement(row, "A").getAttributes().getNamedItem("href").getNodeValue();
+          String scenarioRef = HtmlParserUtils.findChildElement(row, "A").getAttributes().getNamedItem("href").getNodeValue();
           HtmlScenario scenario = new HtmlScenario(scenarioRef);
           File scenarioPath = suite.getFullPathToScenario(scenarioRef);
-          initScenario(scenario, getTableFromHtmlFile(scenarioPath));
+          initScenario(scenario, HtmlParserUtils.getTableFromHtmlFile(scenarioPath));
           suite.addScenario(scenario);
         }
       }
@@ -135,10 +103,10 @@ public class HtmlSuiteRunner {
   }
 
   private void initScenario(HtmlScenario scenario, Node table) {
-    Node thead = findChildElement(table, "THEAD");
+    Node thead = HtmlParserUtils.findChildElement(table, "THEAD");
     scenario.setName(thead.getTextContent().trim());
 
-    Node tbody = findChildElement(table, "TBODY");
+    Node tbody = HtmlParserUtils.findChildElement(table, "TBODY");
     Node row = tbody.getFirstChild();
     while (row != null) {
       if (row.getNodeType() == Node.ELEMENT_NODE) {
