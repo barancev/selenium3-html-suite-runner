@@ -50,6 +50,15 @@ public class HtmlSuite implements HtmlRunnable {
     sb.append(String.format("<h2>Suite %s</h2>\n", path));
     sb.append(String.format("<p>Started at: %s<br/>\n", new Date(start)));
     sb.append(String.format("Total execution time (ms): %d</p>\n", finish - start));
+    sb.append("<table class='scenarios' border='1' cellpadding='1' cellspacing='1'>\n");
+    sb.append("<thead><tr><th>Scenario</th><th>Result</th><th>Time&nbsp;(ms)</th></tr></thead>\n");
+    sb.append("<tbody>\n");
+    for (HtmlScenario scenario : scenarios) {
+      sb.append(String.format("<tr class='%s'><td><a href='#s%s'>%s</a></td><td>%s</td><td>%d</td></tr>\n",
+              scenario.getResult() ? "status_passed" : "status_failed",
+              scenario.getId(), scenario.getName(), scenario.getResult(), scenario.getDuration()));
+    }
+    sb.append("</tbody></table>\n");
     for (HtmlScenario scenario : scenarios) {
       sb.append(scenario.toHtml());
       sb.append("\n");
