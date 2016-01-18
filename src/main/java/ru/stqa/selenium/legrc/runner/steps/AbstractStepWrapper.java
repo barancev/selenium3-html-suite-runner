@@ -22,14 +22,18 @@ public class AbstractStepWrapper extends AbstractStep implements StepWrapper {
   @Override
   public StepOutcome runInternal(RunContext ctx) {
     boolean stepResult = step.run(ctx);
-    result = stepResult && afterStep(ctx);
-    outcome = new BooleanOutcome(result);
-    return outcome;
+    if (stepResult) {
+      result = afterStep(ctx);
+      return new BooleanOutcome(result);
+    } else {
+      result = false;
+      return step.getOutcome();
+    }
   }
 
   protected boolean afterStep(RunContext ctx) {
     return true;
-  };
+  }
 
   @Override
   public String toHtml() {
