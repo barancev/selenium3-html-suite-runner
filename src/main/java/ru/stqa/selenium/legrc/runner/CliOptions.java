@@ -3,6 +3,8 @@ package ru.stqa.selenium.legrc.runner;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
+import org.openqa.selenium.Capabilities;
+import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +18,17 @@ public class CliOptions {
   public String browser;
 
   @Parameter(names = {"--capability", "-c"}, description = "Browser capability")
-  public List<String> capabilities = new ArrayList<String>();
+  private List<String> capabilities = new ArrayList<String>();
+
+  public Capabilities getCapabilities() {
+    DesiredCapabilities result = new DesiredCapabilities();
+    result.setBrowserName(browser);
+    for (String capability : capabilities) {
+      String[] parts = capability.split("=");
+      result.setCapability(parts[0], parts[1]);
+    }
+    return result;
+  }
 
   @Parameter(names = {"--grid", "-g"}, description = "Grid URL")
   public String gridUrl;
