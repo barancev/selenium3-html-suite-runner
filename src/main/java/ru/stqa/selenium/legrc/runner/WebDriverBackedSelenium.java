@@ -1,11 +1,10 @@
 package ru.stqa.selenium.legrc.runner;
 
-import com.google.common.base.Supplier;
-
 import com.thoughtworks.selenium.CommandProcessor;
 import com.thoughtworks.selenium.DefaultSelenium;
 
 import com.thoughtworks.selenium.webdriven.WebDriverCommandProcessor;
+import com.thoughtworks.selenium.webdriven.commands.TypeKeys;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.HasCapabilities;
 import org.openqa.selenium.WebDriver;
@@ -16,6 +15,7 @@ public class WebDriverBackedSelenium extends DefaultSelenium
 
   public WebDriverBackedSelenium(WebDriver baseDriver, String baseUrl) {
     super(new WebDriverCommandProcessor(baseUrl, baseDriver));
+    ((WebDriverCommandProcessor) commandProcessor).addMethod("sendKeys", ((WebDriverCommandProcessor) commandProcessor).getMethod("typeKeys"));
   }
 
   public WebDriver getWrappedDriver() {
