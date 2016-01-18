@@ -4,8 +4,6 @@ import ru.stqa.selenium.legrc.runner.RunContext;
 import ru.stqa.selenium.legrc.runner.Step;
 import ru.stqa.selenium.legrc.runner.StepWrapper;
 
-import java.util.List;
-
 public class WaitForNotResult extends AbstractStepWrapper {
 
   private String expectedResult;

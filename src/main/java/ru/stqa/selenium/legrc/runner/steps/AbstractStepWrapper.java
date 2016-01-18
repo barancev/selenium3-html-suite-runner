@@ -1,9 +1,9 @@
 package ru.stqa.selenium.legrc.runner.steps;
 
-import ru.stqa.selenium.legrc.runner.StepWrapper;
 import ru.stqa.selenium.legrc.runner.RunContext;
 import ru.stqa.selenium.legrc.runner.Step;
 import ru.stqa.selenium.legrc.runner.StepOutcome;
+import ru.stqa.selenium.legrc.runner.StepWrapper;
 
 public class AbstractStepWrapper extends AbstractStep implements StepWrapper {
 

@@ -2,7 +2,6 @@ package ru.stqa.selenium.legrc.runner;
 
 import com.thoughtworks.selenium.CommandProcessor;
 import com.thoughtworks.selenium.DefaultSelenium;
-
 import com.thoughtworks.selenium.webdriven.WebDriverCommandProcessor;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.HasCapabilities;

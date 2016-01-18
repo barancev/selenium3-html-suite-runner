@@ -5,7 +5,6 @@ import ru.stqa.selenium.legrc.runner.Step;
 import ru.stqa.selenium.legrc.runner.StepOutcome;
 import ru.stqa.selenium.legrc.runner.steps.AbstractStep;
 import ru.stqa.selenium.legrc.runner.steps.StringOutcome;
-import ru.stqa.selenium.legrc.runner.steps.VoidOutcome;
 
 import java.util.List;
 

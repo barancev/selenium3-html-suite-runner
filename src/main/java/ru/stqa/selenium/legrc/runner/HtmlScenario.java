@@ -81,7 +81,7 @@ public class HtmlScenario implements HtmlRunnable {
   public String toHtml() {
     StringBuilder sb = new StringBuilder();
     sb.append("<div class='scenario'>\n");
-    sb.append(String.format("<h3><a name='s%s'>Scenario &quot;%s&quot; (%s)</h3>\n", id, name, path));
+    sb.append(String.format("<h3><a name='s%s'></a>Scenario &quot;%s&quot; (%s)</h3>\n", id, name, path));
     sb.append(String.format("<p>Started at: %s<br/>\n", new Date(start)));
     sb.append(String.format("Total execution time (ms): %d</p>\n", getDuration()));
     sb.append("<table class='scenario' border='1' cellpadding='1' cellspacing='1'>\n");
