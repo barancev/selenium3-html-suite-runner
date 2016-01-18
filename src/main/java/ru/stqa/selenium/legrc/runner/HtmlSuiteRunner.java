@@ -1,8 +1,5 @@
 package ru.stqa.selenium.legrc.runner;
 
-import com.beust.jcommander.JCommander;
-import com.beust.jcommander.Parameter;
-import com.beust.jcommander.ParameterException;
 import com.google.common.collect.ImmutableMap;
 import com.thoughtworks.selenium.Selenium;
 import org.cyberneko.html.parsers.DOMParser;
@@ -33,21 +30,7 @@ import java.util.regex.Pattern;
 
 public class HtmlSuiteRunner implements RunContext {
 
-  @Parameter(names = {"--suite", "--scenario", "-s"}, description = "Suite or scenario file to run", required = true)
-  private String suiteOrScenario;
-
-  @Parameter(names = {"--browser", "-b"}, description = "Browser type", required = true)
-  private String browser;
-
-  @Parameter(names = {"--baseurl", "-u"}, description = "Base URL", required = true)
-  private String baseUrl;
-
-  @Parameter(names = {"--report", "-r"}, description = "Report file", required = true)
-  private String report;
-
-  @Parameter(names = {"--overwrite", "-o"}, description = "Overwrite report file")
-  private boolean overwriteReport;
-
+  private CliOptions options = new CliOptions();
   private WebDriver driver;
   private WebDriverBackedSelenium wdbs;
   private Map<String, StepOutcome> vars = new HashMap<String, StepOutcome>();
@@ -55,7 +38,7 @@ public class HtmlSuiteRunner implements RunContext {
   @Override
   public void setDriver(WebDriver driver) {
     this.driver = driver;
-    this.wdbs = new WebDriverBackedSelenium(driver, baseUrl);
+    this.wdbs = new WebDriverBackedSelenium(driver, options.baseUrl);
   }
 
   @Override
@@ -99,42 +82,36 @@ public class HtmlSuiteRunner implements RunContext {
 
   public static void main(String[] args) throws IOException, SAXException {
     HtmlSuiteRunner runner = new HtmlSuiteRunner();
-    JCommander cli = new JCommander(runner);
-    try {
-      cli.parse(args);
-    } catch (ParameterException ex) {
-      cli.usage();
-      return;
-    }
+    runner.options.parse(args);
     runner.run();
   }
 
   private void run() throws IOException, SAXException {
-    File reportFile = new File(report);
-    if (reportFile.exists() && !overwriteReport) {
+    File reportFile = new File(options.report);
+    if (reportFile.exists() && !options.overwriteReport) {
       System.out.println("Report file already exists: " + reportFile);
       System.out.println("If you want to overwrite existing report file use -o option");
       return;
     }
 
-    File toRun = new File(suiteOrScenario);
+    File toRun = new File(options.suiteOrScenario);
     Node table = getTableFromHtmlFile(toRun);
     Node id = table.getAttributes().getNamedItem("id");
     
     HtmlRunnable runnable;
 
     if (id == null) {
-      HtmlScenario scenario = new HtmlScenario(suiteOrScenario);
+      HtmlScenario scenario = new HtmlScenario(options.suiteOrScenario);
       initScenario(scenario, table);
       runnable = scenario;
 
     } else {
-      HtmlSuite suite = new HtmlSuite(suiteOrScenario);
+      HtmlSuite suite = new HtmlSuite(options.suiteOrScenario);
       initSuite(suite, table);
       runnable = suite;
     }
 
-    setDriver(createDriver(browser));
+    setDriver(createDriver(options.browser));
     try {
       runnable.run(this);
     } finally {
@@ -456,14 +433,14 @@ public class HtmlSuiteRunner implements RunContext {
     sb.append("</style>\n</head>\n");
     sb.append("<body>\n");
     sb.append("<h1>Test Run Report</h1>\n");
-    sb.append(String.format("<p>Base URL: %s<br/>\n", baseUrl));
+    sb.append(String.format("<p>Base URL: %s<br/>\n", options.baseUrl));
     Capabilities caps = ((RemoteWebDriver) driver).getCapabilities();
     sb.append(String.format("Driver info: browser=%s, version=%s, platform=%s</p>\n",
             caps.getBrowserName(), caps.getVersion(), caps.getPlatform()));
     sb.append(runnable.toHtml());
     sb.append(String.format("<p>Selenium version: %s</p>\n", new BuildInfo().getReleaseLabel()));
     sb.append("</body>\n</html>");
-    FileWriter reportWriter = new FileWriter(new File(report));
+    FileWriter reportWriter = new FileWriter(new File(options.report));
     try {
       reportWriter.write(sb.toString());
     } finally {
