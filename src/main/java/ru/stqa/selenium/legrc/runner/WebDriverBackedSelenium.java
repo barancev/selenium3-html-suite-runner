@@ -4,7 +4,6 @@ import com.thoughtworks.selenium.CommandProcessor;
 import com.thoughtworks.selenium.DefaultSelenium;
 
 import com.thoughtworks.selenium.webdriven.WebDriverCommandProcessor;
-import com.thoughtworks.selenium.webdriven.commands.TypeKeys;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.HasCapabilities;
 import org.openqa.selenium.WebDriver;
