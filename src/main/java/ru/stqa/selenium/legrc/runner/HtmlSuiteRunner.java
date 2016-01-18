@@ -25,30 +25,36 @@ public class HtmlSuiteRunner {
 
   private CliOptions options = new CliOptions();
   private RunContext ctx = new DefaultRunContext();
+  private HtmlRunnable runnable;
 
   public static void main(String[] args) throws IOException, SAXException {
     HtmlSuiteRunner runner = new HtmlSuiteRunner(args);
-    runner.run();
+    if (runner.prepareEnv() && runner.prepareRunnable() && runner.prepareDriver()) {
+      runner.run();
+    }
+    runner.generateReport();
   }
 
   public HtmlSuiteRunner(String[] args) {
     options.parse(args);
-    ctx.setBaseUrl(options.baseUrl);
   }
 
-  private void run() throws IOException, SAXException {
+  private boolean prepareEnv() {
+    ctx.setBaseUrl(options.baseUrl);
+
     File reportFile = new File(options.report);
     if (reportFile.exists() && !options.overwriteReport) {
       System.out.println("Report file already exists: " + reportFile);
       System.out.println("If you want to overwrite existing report file use -o option");
-      return;
+      return false;
     }
+    return true;
+  }
 
+  private boolean prepareRunnable() throws IOException, SAXException {
     File toRun = new File(options.suiteOrScenario);
     Node table = getTableFromHtmlFile(toRun);
     Node id = table.getAttributes().getNamedItem("id");
-    
-    HtmlRunnable runnable;
 
     if (id == null) {
       HtmlScenario scenario = new HtmlScenario(options.suiteOrScenario);
@@ -61,13 +67,20 @@ public class HtmlSuiteRunner {
       runnable = suite;
     }
 
+    return true;
+  }
+
+  private boolean prepareDriver() throws IOException {
     ctx.setDriver(new DriverFactory(options).createDriver());
+    return true;
+  }
+
+  private void run() throws IOException, SAXException {
     try {
       runnable.run(ctx);
     } finally {
       ctx.getDriver().quit();
     }
-    generateReport(runnable);
   }
 
   private Node getTableFromHtmlFile(File htmlFile) throws IOException, SAXException {
@@ -340,7 +353,7 @@ public class HtmlSuiteRunner {
           .put("andwait", new AndWaitResult.Factory())
           .build();
 
-  private void generateReport(HtmlRunnable runnable) throws IOException {
+  private void generateReport() throws IOException {
     StringBuilder sb = new StringBuilder();
     sb.append("<html>\n<head>\n<style type='text/css'>\n");
     sb.append("table {\n" +
