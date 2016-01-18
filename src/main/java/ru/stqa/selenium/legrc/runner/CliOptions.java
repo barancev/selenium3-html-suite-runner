@@ -36,7 +36,7 @@ public class CliOptions {
       cli.parse(args);
     } catch (ParameterException ex) {
       cli.usage();
-      return;
+      System.exit(0);
     }
   }
 }

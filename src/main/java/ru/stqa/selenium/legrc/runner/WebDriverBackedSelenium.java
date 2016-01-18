@@ -9,6 +9,7 @@ import org.openqa.selenium.HasCapabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.internal.WrapsDriver;
 
+@SuppressWarnings("deprecation")
 public class WebDriverBackedSelenium extends DefaultSelenium
         implements HasCapabilities, WrapsDriver {
 
