@@ -17,6 +17,10 @@ public class ExceptionOutcome implements StepOutcome {
 
   @Override
   public String toString() {
-    return ex.getMessage();
+    if (ex instanceof UnsupportedOperationException) {
+      return "Unsupported operation " + ex.getMessage();
+    } else {
+      return ex.getMessage();
+    }
   }
 }
