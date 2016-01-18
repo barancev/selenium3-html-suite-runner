@@ -17,6 +17,12 @@ public class CliOptions {
   @Parameter(names = {"--browser", "-b"}, description = "Browser type", required = true)
   public String browser;
 
+  @Parameter(names = {"--executable", "-e"}, description = "Browser executable (for Firefox)")
+  public String executable;
+
+  @Parameter(names = {"--driver", "-d"}, description = "Driver executable (for Marionette, Chrome, IE)")
+  public String driverExe;
+
   @Parameter(names = {"--capability", "-c"}, description = "Browser capability")
   private List<String> capabilities = new ArrayList<String>();
 

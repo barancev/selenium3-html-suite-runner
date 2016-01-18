@@ -3,11 +3,14 @@ package ru.stqa.selenium.legrc.runner;
 import com.google.common.collect.ImmutableMap;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.chrome.ChromeDriverService;
+import org.openqa.selenium.firefox.*;
 import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.ie.InternetExplorerDriverService;
 import org.openqa.selenium.remote.BrowserType;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Map;
@@ -43,19 +46,39 @@ public class DriverFactory {
           .put(BrowserType.FIREFOX, new DriverSupplier() {
             @Override
             public WebDriver getDriver(CliOptions options) {
-              return new FirefoxDriver(options.getCapabilities());
+              FirefoxBinary binary = options.executable == null ? new FirefoxBinary()
+                      : new FirefoxBinary(new File(options.executable));
+              return new FirefoxDriver(binary, new FirefoxProfile(), options.getCapabilities());
+            }
+          })
+          .put("marionette", new DriverSupplier() {
+            @Override
+            public WebDriver getDriver(CliOptions options) {
+              GeckoDriverService.Builder serviceBuilder = new GeckoDriverService.Builder();
+              if (options.driverExe != null) {
+                serviceBuilder.usingDriverExecutable(new File(options.driverExe));
+              }
+              return new MarionetteDriver(serviceBuilder.build(), options.getCapabilities());
             }
           })
           .put(BrowserType.CHROME, new DriverSupplier() {
             @Override
             public WebDriver getDriver(CliOptions options) {
-              return new ChromeDriver(options.getCapabilities());
+              ChromeDriverService.Builder serviceBuilder = new ChromeDriverService.Builder();
+              if (options.driverExe != null) {
+                serviceBuilder.usingDriverExecutable(new File(options.driverExe));
+              }
+              return new ChromeDriver(serviceBuilder.build(), options.getCapabilities());
             }
           })
           .put(BrowserType.IE, new DriverSupplier() {
             @Override
             public WebDriver getDriver(CliOptions options) {
-              return new InternetExplorerDriver(options.getCapabilities());
+              InternetExplorerDriverService.Builder serviceBuilder = new InternetExplorerDriverService.Builder();
+              if (options.driverExe != null) {
+                serviceBuilder.usingDriverExecutable(new File(options.driverExe));
+              }
+              return new InternetExplorerDriver(serviceBuilder.build(), options.getCapabilities());
             }
           })
           .build();
