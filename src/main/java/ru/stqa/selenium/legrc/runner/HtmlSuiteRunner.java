@@ -384,12 +384,15 @@ public class HtmlSuiteRunner {
     sb.append("</style>\n</head>\n");
     sb.append("<body>\n");
     sb.append("<h1>Test Run Report</h1>\n");
-    sb.append(String.format("<p>Base URL: %s<br/>\n", options.baseUrl));
     Capabilities caps = ((RemoteWebDriver) ctx.getDriver()).getCapabilities();
-    sb.append(String.format("Driver info: browser=%s, version=%s, platform=%s</p>\n",
-            caps.getBrowserName(), caps.getVersion(), caps.getPlatform()));
+    sb.append("<table class='metadata'><tbody>\n");
+    sb.append(String.format("<tr><td>Base URL</td><td>%s</td></tr>\n", options.baseUrl));
+    sb.append(String.format("<tr><td>Browser type</td><td>%s</td></tr>\n", caps.getBrowserName()));
+    sb.append(String.format("<tr><td>Browser version</td><td>%s</td></tr>\n", caps.getVersion()));
+    sb.append(String.format("<tr><td>Platform</td><td>%s</td></tr>\n", caps.getPlatform()));
+    sb.append("</tbody></table>\n");
     sb.append(runnable.toHtml());
-    sb.append(String.format("<p>Selenium version: %s</p>\n", new BuildInfo().getReleaseLabel()));
+    sb.append(String.format("<p class='footprint'>Test run performed by Selenium version %s</p>\n", new BuildInfo().getReleaseLabel()));
     sb.append("</body>\n</html>");
     FileWriter reportWriter = new FileWriter(new File(options.report));
     try {
