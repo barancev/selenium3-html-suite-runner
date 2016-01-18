@@ -20,6 +20,11 @@ public class StepTestBase {
     }
 
     @Override
+    public void setBaseUrl(String baseUrl) {
+      throw new UnsupportedOperationException();
+    }
+
+    @Override
     public void setDriver(WebDriver driver) {
       throw new UnsupportedOperationException();
     }

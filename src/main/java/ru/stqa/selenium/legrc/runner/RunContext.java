@@ -5,6 +5,8 @@ import org.openqa.selenium.WebDriver;
 
 public interface RunContext {
 
+  void setBaseUrl(String baseUrl);
+
   void setDriver(WebDriver driver);
   WebDriver getDriver();
   Selenium getSelenium();
@@ -13,4 +15,5 @@ public interface RunContext {
 
   void storeVar(String name, StepOutcome value);
   String substitute(String text);
+
 }

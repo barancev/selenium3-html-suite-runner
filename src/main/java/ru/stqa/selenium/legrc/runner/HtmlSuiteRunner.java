@@ -1,7 +1,6 @@
 package ru.stqa.selenium.legrc.runner;
 
 import com.google.common.collect.ImmutableMap;
-import com.thoughtworks.selenium.Selenium;
 import org.cyberneko.html.parsers.DOMParser;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
@@ -22,68 +21,24 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class HtmlSuiteRunner implements RunContext {
+public class HtmlSuiteRunner {
 
   private CliOptions options = new CliOptions();
-  private WebDriver driver;
-  private WebDriverBackedSelenium wdbs;
-  private Map<String, StepOutcome> vars = new HashMap<String, StepOutcome>();
-
-  @Override
-  public void setDriver(WebDriver driver) {
-    this.driver = driver;
-    this.wdbs = new WebDriverBackedSelenium(driver, options.baseUrl);
-  }
-
-  @Override
-  public WebDriver getDriver() {
-    return driver;
-  }
-
-  @SuppressWarnings("deprecation")
-  @Override
-  public Selenium getSelenium() {
-    return wdbs;
-  }
-
-  @Override
-  public long getTimeout() {
-    return 5000;
-  }
-
-  @Override
-  public void storeVar(String name, StepOutcome value) {
-    vars.put(name, value);
-  }
-
-  @Override
-  public String substitute(String text) {
-    StringBuffer sb = new StringBuffer();
-    Pattern p = Pattern.compile("(\\$\\{\\w+\\})");
-    Matcher m = p.matcher(text);
-    while (m.find()) {
-      String maybeVar = m.group(1);
-      String varName = maybeVar.substring(2, maybeVar.length() - 1);
-      if (vars.containsKey(varName)) {
-        m.appendReplacement(sb, Matcher.quoteReplacement(vars.get(varName).toString()));
-      } else {
-        m.appendReplacement(sb, Matcher.quoteReplacement(maybeVar));
-      }
-    }
-    m.appendTail(sb);
-    return sb.toString();
-  }
+  private RunContext ctx = new DefaultRunContext();
 
   public static void main(String[] args) throws IOException, SAXException {
-    HtmlSuiteRunner runner = new HtmlSuiteRunner();
-    runner.options.parse(args);
+    HtmlSuiteRunner runner = new HtmlSuiteRunner(args);
     runner.run();
+  }
+
+  public HtmlSuiteRunner(String[] args) {
+    options.parse(args);
+    ctx.setBaseUrl(options.baseUrl);
   }
 
   private void run() throws IOException, SAXException {
@@ -111,11 +66,11 @@ public class HtmlSuiteRunner implements RunContext {
       runnable = suite;
     }
 
-    setDriver(createDriver(options.browser));
+    ctx.setDriver(createDriver(options.browser));
     try {
-      runnable.run(this);
+      runnable.run(ctx);
     } finally {
-      getDriver().quit();
+      ctx.getDriver().quit();
     }
     generateReport(runnable);
   }
@@ -434,7 +389,7 @@ public class HtmlSuiteRunner implements RunContext {
     sb.append("<body>\n");
     sb.append("<h1>Test Run Report</h1>\n");
     sb.append(String.format("<p>Base URL: %s<br/>\n", options.baseUrl));
-    Capabilities caps = ((RemoteWebDriver) driver).getCapabilities();
+    Capabilities caps = ((RemoteWebDriver) ctx.getDriver()).getCapabilities();
     sb.append(String.format("Driver info: browser=%s, version=%s, platform=%s</p>\n",
             caps.getBrowserName(), caps.getVersion(), caps.getPlatform()));
     sb.append(runnable.toHtml());
