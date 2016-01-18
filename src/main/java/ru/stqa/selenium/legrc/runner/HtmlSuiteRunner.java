@@ -372,6 +372,7 @@ public class HtmlSuiteRunner implements RunContext {
           .put("selectframe", new SelectFrameStep.Factory())
           .put("selectoptions", new SelectOptionsStep.Factory())
           .put("selectpopup", new SelectPopUpStep.Factory())
+          .put("selectwindow", new SelectWindowStep.Factory())
           .put("sendkeys", new SendKeysStep.Factory())
           .put("setbrowserloglevel", new SetBrowserLogLevelStep.Factory())
           .put("setcursorposition", new SetCursorPositionStep.Factory())
